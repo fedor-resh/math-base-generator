@@ -1,5 +1,7 @@
 from random import randint
 from latex_compiler import latex_to_tex
+
+
 def get_py_filenames(path='./'):
     from os import walk
     filenames = next(walk(path), (None, None, []))[2]
@@ -16,6 +18,7 @@ def get_test_arguments(path):
     module = __import__(path)
     return module.task, module.ranges, module.solution
 
+
 def generate_wrong_answers(ranges, solution):
     wrong_answers = []
     for i in range(3):
@@ -25,6 +28,7 @@ def generate_wrong_answers(ranges, solution):
         }
         wrong_answers.append(solution(**variables))
     return wrong_answers
+
 
 def get_tasks(task_mask, ranges, solution, amount):
     tasks = []
