@@ -16,6 +16,15 @@ def get_test_arguments(path):
     module = __import__(path)
     return module.task, module.ranges, module.solution
 
+def generate_wrong_answers(ranges, solution):
+    wrong_answers = []
+    for i in range(3):
+        variables = {
+            key: ranges[key][randint(0, len(ranges[key]) - 1)]
+            for key in ranges
+        }
+        wrong_answers.append(solution(**variables))
+    return wrong_answers
 
 def get_tasks(task_mask, ranges, solution, amount):
     tasks = []
@@ -30,13 +39,14 @@ def get_tasks(task_mask, ranges, solution, amount):
         task = task_mask
         for key in variables:
             task = task.replace(f'[{key}]', str(variables[key]))
-        task = latex_to_tex(task)
+        if '$' in task:
+            task = latex_to_tex(task)
         tasks.append(task.strip())
     return tasks
 
 
 def get_path():
-    files = get_py_filenames('./modules')
+    files = get_py_filenames()
 
     print(*[f'{i + 1}. {files[i]}' for i in range(len(files))] or ['No .py files found'], sep='\n')
     return files[int(input('Enter number of file: ')) - 1]
