@@ -1,5 +1,7 @@
 from random import randint
 from latex_compiler import latex_to_tex
+from config import config
+import sys
 
 
 def get_py_filenames(path='./'):
@@ -9,7 +11,7 @@ def get_py_filenames(path='./'):
 
 
 def write_to_file(text, filename):
-    output = open(f'{filename}_test.txt', 'w')
+    output = open(f'{config["generated_tasks_path"]}/{filename}.txt', 'w')
     output.write(text)
     output.close()
 
@@ -81,24 +83,21 @@ def get_tasks_with_choose(task_mask, ranges, solution, amount):
     return tasks
 
 
-def get_path():
-    files = get_py_filenames()
+def get_module_name(path):
+    files = get_py_filenames(path)
 
     print(*[f'{i + 1}. {files[i]}' for i in range(len(files))] or ['No .py files found'], sep='\n')
     return files[int(input('Enter number of file: ')) - 1]
 
 
-path = get_path()
+module_name = get_module_name(config['modules_path'])
+sys.path.insert(0, config['modules_path'])  # чтобы импортировать модуль из этой папки
 
-task_mask, ranges, solution = get_test_arguments(path)
+task_mask, ranges, solution = get_test_arguments(module_name)
 
-amount_of_tasks = int(input('Amount of tests: '))
-test_type_is_choose = 'y' == input('type of test "choice"? (y/n): ').lower()
-if test_type_is_choose:
-    tasks = get_tasks_with_choose(task_mask, ranges, solution, amount_of_tasks)
-else:
-    tasks = get_tasks(task_mask, ranges, solution, amount_of_tasks)
+params = task_mask, ranges, solution, config['amount_of_tasks']
+tasks = get_tasks_with_choose(*params) if config['type_of_test'] == 'choice' else get_tasks(*params)
 print(*tasks, sep='\n')
-if name := input('Create file (press enter to pass), name: '):
-    write_to_file('\n'.join(tasks), name)
-    print('\nWrote to file:', f'{name}_test.txt')
+if config['create_file']:
+    write_to_file('\n'.join(tasks), module_name)
+    print('Wrote to file:', f'{module_name}.txt')

@@ -14,10 +14,10 @@ def latex_to_tex(text):
             .replace('}', '\}')\
 
     text = '$'.join(parts)
-    text = re.sub(r'\$(.*)\$', r'\\\(\1\\\)', text)
+    text = re.sub(r'\$([^$]*)\$', r'\\\(\1\\\)', text)
     return text
 
 
 if __name__ == '__main__':
-    print(latex_to_tex('$\sqrt{2}sdf{asdf} * 123${}'))
+    print(latex_to_tex('$\sqrt{2}sdf{asdf} * 123${}$xxx$'))
 
