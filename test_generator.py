@@ -45,7 +45,7 @@ def get_tasks(task_mask, ranges, solution, amount):
         task = task_mask
         for key in variables:
             task = task.replace(f'[{key}]', str(variables[key]))
-        task = task + '{=' + answer + '}'
+        task = task + '{=' + str(answer) + '}'
         if '$' in task:
             task = latex_to_tex(task)
         tasks.append(task.strip() + '\n')
