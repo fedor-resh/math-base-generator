@@ -1,8 +1,8 @@
 from random import randint
-from latex_compiler import latex_to_tex
+from latex_to_tex import latex_to_tex
 from config import config
 import sys
-
+import __main__
 
 def get_py_filenames(path='./'):
     from os import walk
@@ -10,8 +10,8 @@ def get_py_filenames(path='./'):
     return [filename.split('.')[0] for filename in filenames if filename.endswith('.py')]
 
 
-def write_to_file(text, filename):
-    output = open(f'{config["generated_tasks_path"]}/{filename}.txt', 'w')
+def write_to_file(text, filename, path='.'):
+    output = open(f'{path}/{config["generated_tasks_path"]}/{filename}.txt', 'w')
     output.write(text)
     output.close()
 
@@ -90,14 +90,25 @@ def get_module_name(path):
     return files[int(input('Enter number of file: ')) - 1]
 
 
-module_name = get_module_name(config['modules_path'])
-sys.path.insert(0, config['modules_path'])  # чтобы импортировать модуль из этой папки
+def generate_test(task_mask: str, ranges: dict, solution: callable):
+    params = task_mask, ranges, solution, config['amount_of_tasks']
+    tasks = get_tasks_with_choose(*params) if config['type_of_test'] == 'choice' else get_tasks(*params)
+    print(*tasks, sep='\n')
+    if config['create_file']:
+        name_of_file = __main__.__file__.split('\\')[-1].split('.')[0]
+        write_to_file('\n'.join(tasks), name_of_file, '..')
+        print('Wrote to file:', f'{name_of_file}.txt')
 
-task_mask, ranges, solution = get_test_arguments(module_name)
 
-params = task_mask, ranges, solution, config['amount_of_tasks']
-tasks = get_tasks_with_choose(*params) if config['type_of_test'] == 'choice' else get_tasks(*params)
-print(*tasks, sep='\n')
-if config['create_file']:
-    write_to_file('\n'.join(tasks), module_name)
-    print('Wrote to file:', f'{module_name}.txt')
+if __name__ == '__main__':
+    module_name = get_module_name(config['modules_path'])
+    sys.path.insert(0, config['modules_path'])  # чтобы импортировать модуль из этой папки
+
+    task_mask, ranges, solution = get_test_arguments(module_name)
+
+    params = task_mask, ranges, solution, config['amount_of_tasks']
+    tasks = get_tasks_with_choose(*params) if config['type_of_test'] == 'choice' else get_tasks(*params)
+    print(*tasks, sep='\n')
+    if config['create_file']:
+        write_to_file('\n'.join(tasks), module_name)
+        print('Wrote to file:', f'{module_name}.txt')
