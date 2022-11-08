@@ -4,6 +4,7 @@ from config import config
 import sys
 import __main__
 
+
 def get_py_filenames(path='./'):
     from os import walk
     filenames = next(walk(path), (None, None, []))[2]
@@ -86,23 +87,39 @@ def get_tasks_with_choose(task_mask, ranges, solution, amount):
 def get_module_name(path):
     files = get_py_filenames(path)
 
+    def check_module(module_name):
+        try:
+            get_test_arguments(module_name)
+        except AttributeError:
+            return False
+        return True
+
+    files = [file for file in files if check_module(file)]
+    print('Valid modules:')
     print(*[f'{i + 1}. {files[i]}' for i in range(len(files))] or ['No .py files found'], sep='\n')
     return files[int(input('Enter number of file: ')) - 1]
 
 
-def generate_test(task_mask: str, ranges: dict, solution: callable):
-    params = task_mask, ranges, solution, config['amount_of_tasks']
-    tasks = get_tasks_with_choose(*params) if config['type_of_test'] == 'choice' else get_tasks(*params)
+def generate_test(
+        task_mask: str,
+        ranges: dict,
+        solution: callable,
+        amount: int = config['amount_of_tasks'],
+        type_of_test: str = config['type_of_test'],
+        create_file: bool = config['create_file'],
+):
+    params = task_mask, ranges, solution, amount
+    tasks = get_tasks_with_choose(*params) if type_of_test == 'choice' else get_tasks(*params)
     print(*tasks, sep='\n')
-    if config['create_file']:
+    if create_file:
         name_of_file = __main__.__file__.split('\\')[-1].split('.')[0]
         write_to_file('\n'.join(tasks), name_of_file, '..')
         print('Wrote to file:', f'{name_of_file}.txt')
 
 
 if __name__ == '__main__':
-    module_name = get_module_name(config['modules_path'])
     sys.path.insert(0, config['modules_path'])  # чтобы импортировать модуль из этой папки
+    module_name = get_module_name(config['modules_path'])
 
     task_mask, ranges, solution = get_test_arguments(module_name)
 
