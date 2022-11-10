@@ -55,35 +55,6 @@ def get_tasks(task_mask, ranges, solution, amount):
     return tasks
 
 
-def get_tasks_with_choose(task_mask, ranges, solution, amount):
-    tasks = []
-    answers = generate_wrong_answers(ranges, solution)
-    while len(tasks) < amount:
-        index_of_correct_answer = randint(0, 3)
-        variables = {
-            key: ranges[key][randint(0, len(ranges[key]) - 1)]
-            for key in ranges
-        }
-        answer = solution(**variables)
-        if not answer: continue
-
-        task = task_mask
-        task += '{'
-        answers[index_of_correct_answer] = answer
-        for i in range(4):
-            if i == index_of_correct_answer:
-                task += f'\n={answers[i]}'
-            else:
-                task += f'\n~{answers[i]}'
-        task += '\n}'
-        for key in variables:
-            task = task.replace(f'[{key}]', str(variables[key]))
-        if '$' in task:
-            task = latex_to_tex(task)
-        tasks.append(task.strip() + '\n')
-    return tasks
-
-
 def get_module_name(path):
     files = get_py_filenames(path)
 
@@ -105,11 +76,10 @@ def generate_test(
         ranges: dict,
         solution: callable,
         amount: int = config['amount_of_tasks'],
-        type_of_test: str = config['type_of_test'],
         create_file: bool = config['create_file'],
 ):
     params = task_mask, ranges, solution, amount
-    tasks = get_tasks_with_choose(*params) if type_of_test == 'choice' else get_tasks(*params)
+    tasks = get_tasks(*params)
     print(*tasks, sep='\n')
     if create_file:
         name_of_file = __main__.__file__.split('\\')[-1].split('.')[0]
@@ -124,7 +94,7 @@ if __name__ == '__main__':
     task_mask, ranges, solution = get_test_arguments(module_name)
 
     params = task_mask, ranges, solution, config['amount_of_tasks']
-    tasks = get_tasks_with_choose(*params) if config['type_of_test'] == 'choice' else get_tasks(*params)
+    tasks = get_tasks(*params)
     print(*tasks, sep='\n')
     if config['create_file']:
         write_to_file('\n'.join(tasks), module_name)
