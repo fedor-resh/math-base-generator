@@ -12,7 +12,8 @@ def get_py_filenames(path='./'):
 
 
 def write_to_file(text, filename, path='.'):
-    output = open(f'{path}/{config["generated_tasks_path"]}/{filename}.txt', 'w')
+    print(f'{path}/{config["generated_tasks_path"]}/{filename}.py')
+    output = open(f'{path}/{config["generated_tasks_path"]}/{filename}.py', 'w')
     output.write(text)
     output.close()
 
