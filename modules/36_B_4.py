@@ -9,4 +9,4 @@ test_36_B = dict(
 )
 
 if __name__ == '__main__':
-    generate_test(**test_36_B, amount=100, type_of_test='simple')
+    generate_test(**test_36_B, amount=100)
