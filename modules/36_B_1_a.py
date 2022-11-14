@@ -16,13 +16,6 @@ ranges = dict(
 )
 
 
-# если возвращает None, то не добавляет в тесты
-# def solution(a, b, c, d, e, f):
-#     answer = (a/b) * c ** 0.5 + (d/e) * f ** 0.5
-#     if int(answer) == answer:
-#         return int(answer)
-#     return
-
 def solution(a, b, c, d, e, f):
     answer = eval(latex_to_python(r'\frac{[a]}{[b]}\cdot\sqrt{[c]}+\frac{[d]}{[e]}\cdot\sqrt{[f]}'))
     if int(answer) == answer:

@@ -22,18 +22,6 @@ def get_test_arguments(path):
     return module.task, module.ranges, module.solution
 
 
-def generate_wrong_answers(ranges, solution):
-    wrong_answers = []
-    while len(wrong_answers) < 4:
-        variables = {
-            key: ranges[key][randint(0, len(ranges[key]) - 1)]
-            for key in ranges
-        }
-        answer = solution(**variables)
-        if answer: wrong_answers.append(answer)
-    return wrong_answers
-
-
 def get_tasks(task_mask, ranges, solution, amount):
     tasks = []
     while len(tasks) < amount:
