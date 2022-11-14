@@ -12,7 +12,8 @@ def get_py_filenames(path='./'):
 
 
 def write_to_file(text, filename, path='.'):
-    output = open(f'{path}/{config["generated_tasks_path"]}/{filename}.txt', 'w')
+    print(f'{path}/{config["generated_tasks_path"]}/{filename}.py')
+    output = open(f'{path}/{config["generated_tasks_path"]}/{filename}.py', 'w')
     output.write(text)
     output.close()
 
@@ -20,18 +21,6 @@ def write_to_file(text, filename, path='.'):
 def get_test_arguments(path):
     module = __import__(path)
     return module.task, module.ranges, module.solution
-
-
-def generate_wrong_answers(ranges, solution):
-    wrong_answers = []
-    while len(wrong_answers) < 4:
-        variables = {
-            key: ranges[key][randint(0, len(ranges[key]) - 1)]
-            for key in ranges
-        }
-        answer = solution(**variables)
-        if answer: wrong_answers.append(answer)
-    return wrong_answers
 
 
 def get_tasks(task_mask, ranges, solution, amount):

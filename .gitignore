@@ -1,3 +1,4 @@
 ./*.txt
+./generated_tasks/*.txt
 test.py
 .idea
