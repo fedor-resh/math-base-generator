@@ -81,4 +81,4 @@ def solve_latex_expression(latex):
 
 
 if __name__ == '__main__':
-    print(python_to_latex('((2/3)(12.96)**0.5)/((1/7)(4.41)**0.5)'))
+    print(python_to_latex('12.96 ** 0.5 / ((1 / 7) * 4.41 ** 0.5)'))

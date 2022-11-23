@@ -25,3 +25,8 @@ def solution(a, b, c):
         x2 = (-b - ((b ** 2) - (4 * (a * c))) ** 0.5) / (2 * a)
         if not x1 % 1 and not x2 % 1:
             return f'{int(x1)}, {int(x2)}'
+if __name__ == '__main__':
+    from GENERATOR import generate_test
+
+    generate_test(task, ranges, solution, amount=100)
+

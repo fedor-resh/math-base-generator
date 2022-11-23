@@ -1,5 +1,5 @@
 task = r'''
-:: Решите уравнение $\left(-\frac{\sqrt{[a]}}{[b]}\right)^{2}$. При необходимости выводить с чточностью вплоть до сотых(1,0 -> 1; 1,2 -> 1,2; 1,23 -> 1,23; 1,234-> 1,23).
+Решите уравнение $\left(-\frac{\sqrt{[a]}}{[b]}\right)^{2}$.
 '''
 
 ranges = dict(
@@ -14,4 +14,10 @@ def solution(a, b):
     if int(answer) == answer:
         return int(answer)
     return
+
+if __name__ == '__main__':
+    from GENERATOR import generate_test
+
+    generate_test(task, ranges, solution)
+
 

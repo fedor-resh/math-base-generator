@@ -3,18 +3,25 @@ from random import choice
 from latex_to_python import latex_to_python
 
 task = r'''
-:: Решите уравнение $-\sqrt{[a]^{[b]}\cdot[c]^{[d]}}$. При необходимости выводить с чточностью вплоть до сотых(1,0 -> 1; 1,2 -> 1,2; 1,23 -> 1,23; 1,234-> 1,23).
+Решите уравнение $[char]\sqrt{[a]^{[b]}\cdot[c]^{[d]}}$
 '''
 
 ranges = dict(
-    a=range(-8, 8),
-    b=list(2 * i for i in range(2, 4)),
-    c=range(-8, 8),
-    d=list(2 * i for i in range(2, 4)),
+    a=[-4, -3, -2, 2, 3, 4],
+    b=list(2 * i for i in range(2, 3)),
+    c=[-4, -3, -2, 2, 3, 4],
+    d=list(2 * i for i in range(2, 3)),
+    char=['-', ''],
 )
 
 
-def solution(a, b, c, d):
-    answer = eval(latex_to_python(r'-\sqrt{[a]^{[b]}\cdot[c]^{[d]}}'))
+def solution(a, b, c, d, char):
+    answer = ((a ** b) * (c ** d)) ** 0.5 * (-1 if char == '-' else 1)
     if int(answer) == answer:
         return int(answer)
+
+if __name__ == '__main__':
+    import sympy
+
+    s = "1+2**(x+y)"
+    print(sympy.latex(sympy.simplify(s)))  # prints '$1 + {2}^{x + y}$'

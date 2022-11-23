@@ -1,5 +1,5 @@
 task = r'''
-:: Решите уравнение $\sqrt{[a]\cdot\frac{[b]}{[c]}\cdot\frac{[d]}{[e]}}-\sqrt{[f]}$. При необходимости выводить с чточностью вплоть до сотых(1,0 -> 1; 1,2 -> 1,2; 1,23 -> 1,23; 1,234-> 1,23).
+Решите уравнение $\sqrt{[a]\cdot\frac{[b]}{[c]}\cdot\frac{[d]}{[e]}}-\sqrt{[f]}$.
 '''
 
 ranges = dict(
@@ -19,3 +19,7 @@ def solution(a, b, c, d, e, f):
         return int(answer)
     return
 
+if __name__ == '__main__':
+    from GENERATOR import generate_test
+
+    generate_test(task, ranges, solution)

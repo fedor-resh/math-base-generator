@@ -22,8 +22,13 @@ def get_test_arguments(path):
     module = __import__(path)
     return module.task, module.ranges, module.solution
 
+def clear_answer(answer):
+    if type(answer) is float:
+        if int(answer) == answer:
+            return int(answer)
+    return answer
 
-def get_tasks(task_mask, ranges, solution, amount):
+def get_tasks(task_mask, ranges, solution, amount, name_of_file):
     tasks = []
     while len(tasks) < amount:
         variables = {
@@ -33,13 +38,15 @@ def get_tasks(task_mask, ranges, solution, amount):
 
         answer = solution(**variables)
         if not answer: continue
+        answer = clear_answer(answer)
 
-        task = task_mask
+        task = f'::file: {name_of_file} {len(tasks)}\n:: {task_mask}'
+
         for key in variables:
             task = task.replace(f'[{key}]', str(variables[key]))
         task = task + '{=' + str(answer) + '}'
-        if '$' in task:
-            task = latex_to_tex(task)
+
+        task = latex_to_tex(task)
         tasks.append(task.strip() + '\n')
     return tasks
 
@@ -67,11 +74,11 @@ def generate_test(
         amount: int = config['amount_of_tasks'],
         create_file: bool = config['create_file'],
 ):
-    params = task_mask, ranges, solution, amount
+    name_of_file = __main__.__file__.split('\\')[-1].split('.')[0]
+    params = task_mask.strip(), ranges, solution, amount, name_of_file
     tasks = get_tasks(*params)
     print(*tasks, sep='\n')
     if create_file:
-        name_of_file = __main__.__file__.split('\\')[-1].split('.')[0]
         write_to_file('\n'.join(tasks), name_of_file, '..')
         print('Wrote to file:', f'{name_of_file}.txt')
 
@@ -82,7 +89,7 @@ if __name__ == '__main__':
 
     task_mask, ranges, solution = get_test_arguments(module_name)
 
-    params = task_mask, ranges, solution, config['amount_of_tasks']
+    params = task_mask.strip(), ranges, solution, config['amount_of_tasks'], module_name
     tasks = get_tasks(*params)
     print(*tasks, sep='\n')
     if config['create_file']:
