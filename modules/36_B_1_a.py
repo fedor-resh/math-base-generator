@@ -3,6 +3,7 @@ from random import choice
 from latex_to_python import latex_to_python
 
 task = r'''
+:: task
 :: Решите уравнение $\frac{[a]}{[b]}\cdot\sqrt{[c]}+\frac{[d]}{[e]}\cdot\sqrt{[f]}$. При необходимости выводить с чточностью вплоть до сотых(1,0 -> 1; 1,2 -> 1,2; 1,23 -> 1,23; 1,234-> 1,23).
 '''
 
