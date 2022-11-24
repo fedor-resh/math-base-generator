@@ -1,9 +1,9 @@
 from random import choice
 
-from latex_to_python import latex_to_python
+from latex import latex_to_python
 
 task = r'''
-Решите уравнение $[char]\sqrt{[a]^{[b]}\cdot[c]^{[d]}}$
+Решите $[char]\sqrt{([a])^{[b]}\cdot([c])^{[d]}}$
 '''
 
 ranges = dict(
@@ -21,7 +21,6 @@ def solution(a, b, c, d, char):
         return int(answer)
 
 if __name__ == '__main__':
-    import sympy
+    from GENERATOR import generate_test
 
-    s = "1+2**(x+y)"
-    print(sympy.latex(sympy.simplify(s)))  # prints '$1 + {2}^{x + y}$'
+    generate_test(task, ranges, solution)

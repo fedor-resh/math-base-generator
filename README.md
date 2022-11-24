@@ -19,13 +19,18 @@ ranges = dict(
 
 def solution(a, b):
     answer = a / b
-    # если функция возвращает None или ничего, то пример пропускается
     if round(answer, 2) == answer:
         # генерить если в ответе не больше 2 знаков после запятой
         return answer
     elif answer > 10:
         # можно регулировать сложность с помощью величины
         return answer
+    elif round(answer, 6) == int(answer):
+        # генерить если в ответе не больше 6 знаков после запятой
+        return answer
+    else:
+        # если ничего не вернулось, то пример пропускается
+        return None
     
 # для запуска в файле
 

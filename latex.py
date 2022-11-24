@@ -1,5 +1,24 @@
 import re
 
+def latex_to_tex(text):
+    parts = text.split('$')
+    for i in range(1, len(parts), 2):
+        parts[i] = parts[i].replace('*', r'\cdot')
+        parts[i] = parts[i].replace(r'\frac', r'\\dfrac') \
+            .replace(r'\sqrt', r'\\sqrt') \
+            .replace(r'\left', r'\\left') \
+            .replace(r'\right', r'\\right') \
+            .replace(r'\cdot', r'\\cdot') \
+            .replace('{', r'\{') \
+            .replace('}', r'\}')
+        try:
+            render_latex(parts[i])
+        except:
+            pass
+        parts[i] = r'\\(' + parts[i] + r'\\)'
+    text = ''.join(parts)
+
+    return text
 
 def latex_to_python(latex):
     """:return: python string"""
@@ -81,4 +100,4 @@ def solve_latex_expression(latex):
 
 
 if __name__ == '__main__':
-    print(python_to_latex('12.96 ** 0.5 / ((1 / 7) * 4.41 ** 0.5)'))
+    pass

@@ -1,5 +1,5 @@
 from random import randint
-from latex_to_tex import latex_to_tex
+from latex import latex_to_tex
 from config import config
 import sys
 import __main__
@@ -38,6 +38,7 @@ def get_params(func):
 def get_tasks(task_mask, ranges, solution, amount, name_of_file):
     tasks = []
     params = get_params(solution)
+    task_mask = latex_to_tex(task_mask)
     while len(tasks) < amount:
         variables = {
             key: ranges[key][randint(0, len(ranges[key]) - 1)]
@@ -51,14 +52,13 @@ def get_tasks(task_mask, ranges, solution, amount, name_of_file):
             answer = None
         if not answer: continue
 
-        task = f':: file: {name_of_file} {len(tasks)}\n:: {task_mask}'
+        task = f':: file: {name_of_file} {len(tasks)}\n:: {task_mask}\n'
 
         for key in variables:
             task = task.replace(f'[{key}]', str(variables[key]))
         task += '{' + handle_answer(answer) + '}'
 
-        task = latex_to_tex(task)
-        tasks.append(task.strip() + '\n')
+        tasks.append(task + '\n')
     return tasks
 
 
