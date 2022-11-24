@@ -12,7 +12,7 @@ def get_py_filenames(path='./'):
 
 
 def write_to_file(text, filename, path='.'):
-    print(f'{path}/{config["generated_tasks_path"]}/{filename}.txt')
+    print(f'Wrote to: {path}/{config["generated_tasks_path"]}/{filename}.txt')
     output = open(f'{path}/{config["generated_tasks_path"]}/{filename}.txt', 'w', encoding='utf-8')
     output.write(text)
     output.close()
@@ -29,22 +29,29 @@ def handle_answer(answer):
         return f'={answer} ={str(answer).replace(".", ",")}'
     return f'={answer}'
 
+def get_params(func):
+    import inspect
+    return inspect.getfullargspec(func)[0]
+
+
+
 def get_tasks(task_mask, ranges, solution, amount, name_of_file):
     tasks = []
+    params = get_params(solution)
     while len(tasks) < amount:
         variables = {
             key: ranges[key][randint(0, len(ranges[key]) - 1)]
-            for key in ranges
+            if key in ranges else randint(1, 10)
+            for key in params
         }
-
         try:
             answer = solution(**variables)
         except Exception as e:
-            print('ERROR:' + e)
+            print(f'ERROR: {e}')
             answer = None
         if not answer: continue
 
-        task = f'::file: {name_of_file} {len(tasks)}\n:: {task_mask}'
+        task = f':: file: {name_of_file} {len(tasks)}\n:: {task_mask}'
 
         for key in variables:
             task = task.replace(f'[{key}]', str(variables[key]))
@@ -84,7 +91,6 @@ def generate_test(
     print(*tasks, sep='\n')
     if create_file:
         write_to_file('\n'.join(tasks), name_of_file, '..')
-        print('Wrote to file:', f'{name_of_file}.txt')
 
 
 if __name__ == '__main__':
@@ -98,4 +104,3 @@ if __name__ == '__main__':
     print(*tasks, sep='\n')
     if config['create_file']:
         write_to_file('\n'.join(tasks), module_name)
-        print('Wrote to file:', f'{module_name}.txt')
