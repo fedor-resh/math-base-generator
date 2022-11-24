@@ -1,11 +1,9 @@
 # Пример файла для работы компилятора
 
-## Текст задачи с переменными в виде [переменная] результат функции записывается в [answer]
+## Текст задачи с переменными в виде [переменная]
 
 ```python
-task = '''
-:: Решите уравнение $[a]x^2 + [b]x + \sqrt{[c]} = 0$. {=[answer]}
-'''
+task = r'Решите уравнение $\frac{[a]}{[b]}$.'
 ```
 
 ## Переменным присваиваются списки значений которые они могут принимать
@@ -14,15 +12,22 @@ task = '''
 ranges = dict(
     a=range(1, 3),
     b=range(-10, 10),
-    c=list(map(lambda x: x ** 2, range(1, 10))),
 )
 ```
 
 ## Решение задачи
 
 ```python
-def solution(a, b, c):
-    if not a:
-        return  # если возвращает None, то не добавляет в тесты
-    return str(answer)
+def solution(a, b):
+    if round(a / b, 2) == a / b: 
+        # генерить если в ответе не больше 2 знаков после запятой
+        return a / b
+```
+
+## для запуска в файле
+
+```python
+if __name__ == '__main__':
+    from GENERATOR import generate_test
+    generate_test(test, ranges, solution)
 ```

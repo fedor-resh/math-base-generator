@@ -22,11 +22,12 @@ def get_test_arguments(path):
     module = __import__(path)
     return module.task, module.ranges, module.solution
 
-def clear_answer(answer):
+def handle_answer(answer):
     if type(answer) is float:
         if int(answer) == answer:
-            return int(answer)
-    return answer
+            return f'={int(answer)}'
+        return f'={answer} ={str(answer).replace(".", ",")}'
+    return f'={answer}'
 
 def get_tasks(task_mask, ranges, solution, amount, name_of_file):
     tasks = []
@@ -38,13 +39,12 @@ def get_tasks(task_mask, ranges, solution, amount, name_of_file):
 
         answer = solution(**variables)
         if not answer: continue
-        answer = clear_answer(answer)
 
         task = f'::file: {name_of_file} {len(tasks)}\n:: {task_mask}'
 
         for key in variables:
             task = task.replace(f'[{key}]', str(variables[key]))
-        task = task + '{=' + str(answer) + '}'
+        task += '{' + handle_answer(answer) + '}'
 
         task = latex_to_tex(task)
         tasks.append(task.strip() + '\n')
