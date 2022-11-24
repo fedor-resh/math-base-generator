@@ -37,7 +37,11 @@ def get_tasks(task_mask, ranges, solution, amount, name_of_file):
             for key in ranges
         }
 
-        answer = solution(**variables)
+        try:
+            answer = solution(**variables)
+        except Exception as e:
+            print('ERROR:' + e)
+            answer = None
         if not answer: continue
 
         task = f'::file: {name_of_file} {len(tasks)}\n:: {task_mask}'

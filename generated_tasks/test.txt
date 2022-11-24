@@ -1,0 +1,29 @@
+::file: test 0
+:: \\(\frac{1}{1}\\){=1}
+
+::file: test 1
+:: \\(\frac{1}{1}\\){=1}
+
+::file: test 2
+:: \\(\frac{1}{1}\\){=1}
+
+::file: test 3
+:: \\(\frac{1}{1}\\){=1}
+
+::file: test 4
+:: \\(\frac{1}{1}\\){=1}
+
+::file: test 5
+:: \\(\frac{1}{1}\\){=1}
+
+::file: test 6
+:: \\(\frac{1}{1}\\){=1}
+
+::file: test 7
+:: \\(\frac{1}{1}\\){=1}
+
+::file: test 8
+:: \\(\frac{1}{1}\\){=1}
+
+::file: test 9
+:: \\(\frac{1}{1}\\){=1}
