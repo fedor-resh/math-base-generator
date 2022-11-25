@@ -4,6 +4,7 @@ def latex_to_tex(text):
     parts = text.split('$')
     for i in range(1, len(parts), 2):
         parts[i] = parts[i].replace('*', r'\cdot')
+        render_latex(parts[i])
         parts[i] = parts[i].replace(r'\frac', r'\\dfrac') \
             .replace(r'\sqrt', r'\\sqrt') \
             .replace(r'\left', r'\\left') \
@@ -11,10 +12,7 @@ def latex_to_tex(text):
             .replace(r'\cdot', r'\\cdot') \
             .replace('{', r'\{') \
             .replace('}', r'\}')
-        try:
-            render_latex(parts[i])
-        except:
-            pass
+
         parts[i] = r'\\(' + parts[i] + r'\\)'
     text = ''.join(parts)
 
@@ -65,20 +63,20 @@ def python_to_latex(python):
 
 
 def render_latex(tex):
-    import matplotlib.pyplot as plt
-    tex = f'${tex}$'
-    # Создание области отрисовки
-    fig = plt.figure()
-    ax = fig.add_axes([0, 0, 1, 1])
-    ax.set_axis_off()
-
-    # Отрисовка формулы
-    t = ax.text(0.5, 0.5, tex,
-                horizontalalignment='center',
-                verticalalignment='center',
-                fontsize=20, color='black')
-
     try:
+        import matplotlib.pyplot as plt
+        tex = f'${tex}$'
+        # Создание области отрисовки
+        fig = plt.figure()
+        ax = fig.add_axes([0, 0, 1, 1])
+        ax.set_axis_off()
+
+        # Отрисовка формулы
+        t = ax.text(0.5, 0.5, tex,
+                    horizontalalignment='center',
+                    verticalalignment='center',
+                    fontsize=20, color='black')
+
         # Определение размеров формулы
         ax.figure.canvas.draw()
         bbox = t.get_window_extent()

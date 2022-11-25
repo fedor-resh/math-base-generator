@@ -16,5 +16,4 @@ ranges = dict(
 
 if __name__ == '__main__':
     import GENERATOR
-
     GENERATOR.generate_test(test, ranges, solution)

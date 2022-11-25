@@ -1,39 +1,39 @@
 :: file: test 0
-:: \\(\sqrt{16}\cdot\sqrt{9}\\)
-{=12}
+:: \\(\\sqrt\{14\}\\cdot\\sqrt\{14\}\\)
+{=14}
 
 :: file: test 1
-:: \\(\sqrt{16}\cdot\sqrt{9}\\)
+:: \\(\\sqrt\{8\}\\cdot\\sqrt\{18\}\\)
 {=12}
 
 :: file: test 2
-:: \\(\sqrt{14}\cdot\sqrt{14}\\)
-{=14}
-
-:: file: test 3
-:: \\(\sqrt{8}\cdot\sqrt{2}\\)
-{=4}
-
-:: file: test 4
-:: \\(\sqrt{5}\cdot\sqrt{5}\\)
-{=5}
-
-:: file: test 5
-:: \\(\sqrt{18}\cdot\sqrt{2}\\)
-{=6}
-
-:: file: test 6
-:: \\(\sqrt{18}\cdot\sqrt{8}\\)
-{=12}
-
-:: file: test 7
-:: \\(\sqrt{4}\cdot\sqrt{16}\\)
+:: \\(\\sqrt\{8\}\\cdot\\sqrt\{8\}\\)
 {=8}
 
-:: file: test 8
-:: \\(\sqrt{2}\cdot\sqrt{8}\\)
+:: file: test 3
+:: \\(\\sqrt\{16\}\\cdot\\sqrt\{4\}\\)
+{=8}
+
+:: file: test 4
+:: \\(\\sqrt\{4\}\\cdot\\sqrt\{4\}\\)
 {=4}
 
+:: file: test 5
+:: \\(\\sqrt\{18\}\\cdot\\sqrt\{8\}\\)
+{=12}
+
+:: file: test 6
+:: \\(\\sqrt\{4\}\\cdot\\sqrt\{9\}\\)
+{=6}
+
+:: file: test 7
+:: \\(\\sqrt\{9\}\\cdot\\sqrt\{4\}\\)
+{=6}
+
+:: file: test 8
+:: \\(\\sqrt\{16\}\\cdot\\sqrt\{9\}\\)
+{=12}
+
 :: file: test 9
-:: \\(\sqrt{14}\cdot\sqrt{14}\\)
-{=14}
+:: \\(\\sqrt\{4\}\\cdot\\sqrt\{16\}\\)
+{=8}
