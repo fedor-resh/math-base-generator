@@ -1,3 +1,4 @@
+import re
 from random import randint
 from latex import latex_to_tex
 from config import config
@@ -35,7 +36,8 @@ def get_params(func):
     return inspect.getfullargspec(func)[0]
 
 
-
+def prettify_task(task):
+    return re.sub(r'1(\w+)', r'\1', task)
 def get_tasks(task_mask, ranges, solution, amount, name_of_file):
     tasks = []
     params = get_params(solution)
@@ -53,13 +55,13 @@ def get_tasks(task_mask, ranges, solution, amount, name_of_file):
             answer = None
         if not answer: continue
 
-        task = f':: file: {name_of_file} {len(tasks)}\n:: {task_mask}\n'
+        task = f':: file: {name_of_file} {len(tasks)}\n:: {task_mask}'
 
         for key in variables:
             task = task.replace(f'[{key}]', str(variables[key]))
-        task += '{' + handle_answer(answer) + '}'
+        task += '\n{' + handle_answer(answer) + '}\n'
 
-        tasks.append(task + '\n')
+        tasks.append(prettify_task(task))
     return tasks
 
 
