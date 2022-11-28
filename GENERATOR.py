@@ -109,4 +109,4 @@ if __name__ == '__main__':
         tasks += get_tasks(*params)
     print(*tasks, sep='\n')
     if config['create_file']:
-        write_to_file('\n'.join(tasks), datetime.now().strftime('%Y-%m-%d %H-%M-%S'))
+        write_to_file('\n'.join(tasks), '00 Several_tests')
