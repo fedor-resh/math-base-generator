@@ -13,7 +13,7 @@ def latex_to_tex(text):
             .replace('{', r'\{') \
             .replace('}', r'\}')
 
-        parts[i] = r'\\(' + parts[i] + r'\\)'
+        parts[i] = r'\(' + parts[i] + r'\)'
     text = ''.join(parts)
 
     return text
@@ -63,6 +63,7 @@ def python_to_latex(python):
 
 
 def render_latex(tex):
+    print('render_latex')
     try:
         import matplotlib.pyplot as plt
         tex = f'${tex}$'
@@ -99,3 +100,4 @@ def solve_latex_expression(latex):
 
 if __name__ == '__main__':
     pass
+

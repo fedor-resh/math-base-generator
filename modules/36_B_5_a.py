@@ -3,7 +3,7 @@ from random import choice
 from latex import latex_to_python
 
 task = r'''
-:: Решите уравнение $-\sqrt{[a]^{[b]}\cdot[c]^{[d]}}$. При необходимости выводить с чточностью вплоть до сотых(1,0 -> 1; 1,2 -> 1,2; 1,23 -> 1,23; 1,234-> 1,23).
+Решите уравнение $-\sqrt{[a]^{[b]}\cdot[c]^{[d]}}$.
 '''
 
 ranges = dict(

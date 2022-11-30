@@ -12,10 +12,12 @@ def arccos(x):
 def solution(a, b, c, e):
     left = arccos(e)
     # solve quadratic equation
-    c -= left
-    roots = solve_square(a, b, c)
-    if roots:
-        return sorted(roots)[0]
+    c -= left + 10
+    roots_array = []
+    for i in range(0, 11, 2):
+        roots = solve_square(a, b, c + i)
+        roots_array.extend(roots)
+    return sorted([i for i in roots_array if i > 0])[0]
 
 
 if __name__ == '__main__':
