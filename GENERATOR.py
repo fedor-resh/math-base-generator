@@ -8,7 +8,6 @@ import sys
 import __main__
 
 
-
 def get_py_filenames(path='./'):
     from os import walk
     filenames = next(walk(path), (None, None, []))[2]
@@ -27,12 +26,14 @@ def get_test_arguments(path):
     module = __import__(path)
     return module.task, module.ranges, module.solution
 
+
 def handle_answer(answer):
     if type(answer) is float:
         if int(answer) == answer:
             return f'={int(answer)}'
         return f'={answer} ={str(answer).replace(".", ",")}'
     return f'={answer}'
+
 
 def get_params(func):
     import inspect
@@ -41,15 +42,23 @@ def get_params(func):
 
 def prettify_task(task):
     return re.sub(r'1([a-zA-Z])', r'\1', task)
+
+def prettify_ranges(ranges):
+    for key in ranges:
+        ranges[key] = list(ranges[key])
+        ranges[key] = [i for i in ranges[key] if i != 0]
+    return ranges
+
 def get_tasks(task_mask, ranges, solution, amount, name_of_file):
     errors = 0
+    ranges = prettify_ranges(ranges)
     tasks = []
     params = get_params(solution)
     task_mask = latex_to_tex(task_mask)
     while len(tasks) < amount:
         variables = {
             key: ranges[key][randint(0, len(ranges[key]) - 1)]
-            if key in ranges else randint(1, 10)
+            if key in ranges else randint(2, 10)
             for key in params
         }
         try:
@@ -105,7 +114,6 @@ def generate_test(
 
 
 if __name__ == '__main__':
-    from datetime import datetime
     sys.path.insert(0, config['modules_path'])  # чтобы импортировать модуль из этой папки
     module_names = get_module_names(config['modules_path'])
     tasks = []
@@ -115,4 +123,4 @@ if __name__ == '__main__':
         tasks += get_tasks(*params)
     print(*tasks, sep='\n')
     if config['create_file']:
-        write_to_file('\n'.join(tasks), '00 Several_tests')
+        write_to_file('\n'.join(tasks), '00 Several_tests' if len(module_names) > 1 else module_names[0])

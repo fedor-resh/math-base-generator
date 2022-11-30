@@ -13,7 +13,7 @@ def latex_to_tex(text):
             .replace('{', r'\{') \
             .replace('}', r'\}')
 
-        parts[i] = r'\\(' + parts[i] + r'\\)'
+        parts[i] = r'\(' + parts[i] + r'\)'
     text = ''.join(parts)
 
     return text
