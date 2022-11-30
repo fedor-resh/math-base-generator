@@ -38,7 +38,7 @@ def get_params(func):
 
 
 def prettify_task(task):
-    return re.sub(r'1(\w+)', r'\1', task)
+    return re.sub(r'1([a-zA-Z])', r'\1', task)
 def get_tasks(task_mask, ranges, solution, amount, name_of_file):
     tasks = []
     params = get_params(solution)
