@@ -7,10 +7,10 @@ task = r'''
 '''
 
 ranges = dict(
-    a=range(2, 5),
-    b=list(2 * i for i in range(2, 3)),
-    c=range(2, 5),
-    d=list(2 * i for i in range(2, 3)),
+    a=range(2, 8),
+    b=list(2 * i for i in range(2, 4)),
+    c=range(2, 8),
+    d=list(2 * i for i in range(2, 4)),
 )
 
 

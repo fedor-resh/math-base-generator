@@ -67,11 +67,12 @@ def get_tasks(task_mask, ranges, solution, amount, name_of_file):
         for key in variables:
             task = task.replace(f'[{key}]', str(variables[key]))
         task += '\n{' + handle_answer(answer) + '}\n'
+
         tasks.append(prettify_task(task))
     return tasks
 
 
-def get_module_name(path):
+def get_module_names(path):
     files = get_py_filenames(path)
 
     def check_module(module_name):
@@ -84,7 +85,8 @@ def get_module_name(path):
     files = [file for file in files if check_module(file)]
     print('Valid modules:')
     print(*[f'{i + 1}. {files[i]}' for i in range(len(files))] or ['No .py files found'], sep='\n')
-    return files[int(input('Enter number of file: ')) - 1]
+    indexes_of_modules = list(map(int, input('Enter modules to generate, example (1 2 12): ').split()))
+    return [files[i] for i in range(len(files)) if i + 1 in indexes_of_modules]
 
 
 def generate_test(
@@ -103,13 +105,14 @@ def generate_test(
 
 
 if __name__ == '__main__':
+    from datetime import datetime
     sys.path.insert(0, config['modules_path'])  # чтобы импортировать модуль из этой папки
-    module_name = get_module_name(config['modules_path'])
-
-    task_mask, ranges, solution = get_test_arguments(module_name)
-
-    params = task_mask.strip(), ranges, solution, config['amount_of_tasks'], module_name
-    tasks = get_tasks(*params)
+    module_names = get_module_names(config['modules_path'])
+    tasks = []
+    for module_name in module_names:
+        task_mask, ranges, solution = get_test_arguments(module_name)
+        params = task_mask.strip(), ranges, solution, config['amount_of_tasks'], module_name
+        tasks += get_tasks(*params)
     print(*tasks, sep='\n')
     if config['create_file']:
-        write_to_file('\n'.join(tasks), module_name)
+        write_to_file('\n'.join(tasks), '00 Several_tests')
