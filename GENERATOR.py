@@ -1,9 +1,12 @@
+import logging
 import re
+import traceback
 from random import randint
 from latex import latex_to_tex
 from config import config
 import sys
 import __main__
+
 
 
 def get_py_filenames(path='./'):
@@ -37,8 +40,9 @@ def get_params(func):
 
 
 def prettify_task(task):
-    return re.sub(r'1(\w+)', r'\1', task)
+    return re.sub(r'1([a-zA-Z])', r'\1', task)
 def get_tasks(task_mask, ranges, solution, amount, name_of_file):
+    errors = 0
     tasks = []
     params = get_params(solution)
     task_mask = latex_to_tex(task_mask)
@@ -51,8 +55,11 @@ def get_tasks(task_mask, ranges, solution, amount, name_of_file):
         try:
             answer = solution(**variables)
         except Exception as e:
-            print(f'ERROR: {e}')
-            answer = None
+            if not errors:
+                print(f'ERROR: {e} with variables: {variables}')
+                traceback.print_exc()
+            errors += 1
+            continue
         if not answer: continue
 
         task = f':: file: {name_of_file} {len(tasks)}\n:: {task_mask}'
@@ -60,7 +67,6 @@ def get_tasks(task_mask, ranges, solution, amount, name_of_file):
         for key in variables:
             task = task.replace(f'[{key}]', str(variables[key]))
         task += '\n{' + handle_answer(answer) + '}\n'
-
         tasks.append(prettify_task(task))
     return tasks
 
