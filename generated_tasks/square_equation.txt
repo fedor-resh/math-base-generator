@@ -1,0 +1,399 @@
+:: file: square_equation 0
+:: Решите уравнение \(x^2 + 5x + \\sqrt\{4\} = 0\).
+{=[-1, -4]}
+
+:: file: square_equation 1
+:: Решите уравнение \(x^2 + 4x + \\sqrt\{4\} = 0\).
+{=[-2]}
+
+:: file: square_equation 2
+:: Решите уравнение \(x^2 + 8x + \\sqrt\{16\} = 0\).
+{=[-4]}
+
+:: file: square_equation 3
+:: Решите уравнение \(2x^2 + -6x + \\sqrt\{4\} = 0\).
+{=[2, 1]}
+
+:: file: square_equation 4
+:: Решите уравнение \(x^2 + -10x + \\sqrt\{25\} = 0\).
+{=[5]}
+
+:: file: square_equation 5
+:: Решите уравнение \(x^2 + 5x + \\sqrt\{4\} = 0\).
+{=[-1, -4]}
+
+:: file: square_equation 6
+:: Решите уравнение \(x^2 + -5x + \\sqrt\{4\} = 0\).
+{=[4, 1]}
+
+:: file: square_equation 7
+:: Решите уравнение \(x^2 + -5x + \\sqrt\{4\} = 0\).
+{=[4, 1]}
+
+:: file: square_equation 8
+:: Решите уравнение \(x^2 + -10x + \\sqrt\{9\} = 0\).
+{=[9, 1]}
+
+:: file: square_equation 9
+:: Решите уравнение \(x^2 + -10x + \\sqrt\{16\} = 0\).
+{=[8, 2]}
+
+:: file: square_equation 10
+:: Решите уравнение \(x^2 + -5x + \\sqrt\{4\} = 0\).
+{=[4, 1]}
+
+:: file: square_equation 11
+:: Решите уравнение \(x^2 + -6x + \\sqrt\{9\} = 0\).
+{=[3]}
+
+:: file: square_equation 12
+:: Решите уравнение \(x^2 + -8x + \\sqrt\{16\} = 0\).
+{=[4]}
+
+:: file: square_equation 13
+:: Решите уравнение \(x^2 + 8x + \\sqrt\{16\} = 0\).
+{=[-4]}
+
+:: file: square_equation 14
+:: Решите уравнение \(x^2 + 2x + \\sqrt\{1\} = 0\).
+{=[-1]}
+
+:: file: square_equation 15
+:: Решите уравнение \(2x^2 + -6x + \\sqrt\{4\} = 0\).
+{=[2, 1]}
+
+:: file: square_equation 16
+:: Решите уравнение \(x^2 + -4x + \\sqrt\{4\} = 0\).
+{=[2]}
+
+:: file: square_equation 17
+:: Решите уравнение \(x^2 + 6x + \\sqrt\{9\} = 0\).
+{=[-3]}
+
+:: file: square_equation 18
+:: Решите уравнение \(x^2 + 6x + \\sqrt\{9\} = 0\).
+{=[-3]}
+
+:: file: square_equation 19
+:: Решите уравнение \(x^2 + -4x + \\sqrt\{4\} = 0\).
+{=[2]}
+
+:: file: square_equation 20
+:: Решите уравнение \(2x^2 + 6x + \\sqrt\{4\} = 0\).
+{=[-1, -2]}
+
+:: file: square_equation 21
+:: Решите уравнение \(x^2 + -10x + \\sqrt\{25\} = 0\).
+{=[5]}
+
+:: file: square_equation 22
+:: Решите уравнение \(x^2 + -4x + \\sqrt\{4\} = 0\).
+{=[2]}
+
+:: file: square_equation 23
+:: Решите уравнение \(x^2 + -2x + \\sqrt\{1\} = 0\).
+{=[1]}
+
+:: file: square_equation 24
+:: Решите уравнение \(x^2 + 5x + \\sqrt\{4\} = 0\).
+{=[-1, -4]}
+
+:: file: square_equation 25
+:: Решите уравнение \(x^2 + -10x + \\sqrt\{16\} = 0\).
+{=[8, 2]}
+
+:: file: square_equation 26
+:: Решите уравнение \(x^2 + 5x + \\sqrt\{4\} = 0\).
+{=[-1, -4]}
+
+:: file: square_equation 27
+:: Решите уравнение \(x^2 + 5x + \\sqrt\{4\} = 0\).
+{=[-1, -4]}
+
+:: file: square_equation 28
+:: Решите уравнение \(x^2 + -5x + \\sqrt\{4\} = 0\).
+{=[4, 1]}
+
+:: file: square_equation 29
+:: Решите уравнение \(x^2 + 5x + \\sqrt\{4\} = 0\).
+{=[-1, -4]}
+
+:: file: square_equation 30
+:: Решите уравнение \(2x^2 + -6x + \\sqrt\{4\} = 0\).
+{=[2, 1]}
+
+:: file: square_equation 31
+:: Решите уравнение \(x^2 + -10x + \\sqrt\{16\} = 0\).
+{=[8, 2]}
+
+:: file: square_equation 32
+:: Решите уравнение \(x^2 + 5x + \\sqrt\{4\} = 0\).
+{=[-1, -4]}
+
+:: file: square_equation 33
+:: Решите уравнение \(x^2 + -10x + \\sqrt\{9\} = 0\).
+{=[9, 1]}
+
+:: file: square_equation 34
+:: Решите уравнение \(x^2 + -6x + \\sqrt\{9\} = 0\).
+{=[3]}
+
+:: file: square_equation 35
+:: Решите уравнение \(x^2 + -8x + \\sqrt\{16\} = 0\).
+{=[4]}
+
+:: file: square_equation 36
+:: Решите уравнение \(x^2 + -8x + \\sqrt\{16\} = 0\).
+{=[4]}
+
+:: file: square_equation 37
+:: Решите уравнение \(2x^2 + 6x + \\sqrt\{4\} = 0\).
+{=[-1, -2]}
+
+:: file: square_equation 38
+:: Решите уравнение \(x^2 + -10x + \\sqrt\{9\} = 0\).
+{=[9, 1]}
+
+:: file: square_equation 39
+:: Решите уравнение \(x^2 + 5x + \\sqrt\{4\} = 0\).
+{=[-1, -4]}
+
+:: file: square_equation 40
+:: Решите уравнение \(x^2 + 8x + \\sqrt\{16\} = 0\).
+{=[-4]}
+
+:: file: square_equation 41
+:: Решите уравнение \(x^2 + 5x + \\sqrt\{4\} = 0\).
+{=[-1, -4]}
+
+:: file: square_equation 42
+:: Решите уравнение \(x^2 + -2x + \\sqrt\{1\} = 0\).
+{=[1]}
+
+:: file: square_equation 43
+:: Решите уравнение \(x^2 + 4x + \\sqrt\{4\} = 0\).
+{=[-2]}
+
+:: file: square_equation 44
+:: Решите уравнение \(x^2 + -10x + \\sqrt\{25\} = 0\).
+{=[5]}
+
+:: file: square_equation 45
+:: Решите уравнение \(x^2 + 6x + \\sqrt\{9\} = 0\).
+{=[-3]}
+
+:: file: square_equation 46
+:: Решите уравнение \(x^2 + -10x + \\sqrt\{9\} = 0\).
+{=[9, 1]}
+
+:: file: square_equation 47
+:: Решите уравнение \(x^2 + -8x + \\sqrt\{16\} = 0\).
+{=[4]}
+
+:: file: square_equation 48
+:: Решите уравнение \(x^2 + -4x + \\sqrt\{4\} = 0\).
+{=[2]}
+
+:: file: square_equation 49
+:: Решите уравнение \(2x^2 + -6x + \\sqrt\{4\} = 0\).
+{=[2, 1]}
+
+:: file: square_equation 50
+:: Решите уравнение \(x^2 + -2x + \\sqrt\{1\} = 0\).
+{=[1]}
+
+:: file: square_equation 51
+:: Решите уравнение \(x^2 + -2x + \\sqrt\{1\} = 0\).
+{=[1]}
+
+:: file: square_equation 52
+:: Решите уравнение \(x^2 + -8x + \\sqrt\{16\} = 0\).
+{=[4]}
+
+:: file: square_equation 53
+:: Решите уравнение \(x^2 + 2x + \\sqrt\{1\} = 0\).
+{=[-1]}
+
+:: file: square_equation 54
+:: Решите уравнение \(x^2 + -10x + \\sqrt\{25\} = 0\).
+{=[5]}
+
+:: file: square_equation 55
+:: Решите уравнение \(x^2 + -4x + \\sqrt\{4\} = 0\).
+{=[2]}
+
+:: file: square_equation 56
+:: Решите уравнение \(2x^2 + -6x + \\sqrt\{4\} = 0\).
+{=[2, 1]}
+
+:: file: square_equation 57
+:: Решите уравнение \(x^2 + -8x + \\sqrt\{16\} = 0\).
+{=[4]}
+
+:: file: square_equation 58
+:: Решите уравнение \(x^2 + -2x + \\sqrt\{1\} = 0\).
+{=[1]}
+
+:: file: square_equation 59
+:: Решите уравнение \(x^2 + 4x + \\sqrt\{4\} = 0\).
+{=[-2]}
+
+:: file: square_equation 60
+:: Решите уравнение \(x^2 + -6x + \\sqrt\{9\} = 0\).
+{=[3]}
+
+:: file: square_equation 61
+:: Решите уравнение \(2x^2 + -6x + \\sqrt\{4\} = 0\).
+{=[2, 1]}
+
+:: file: square_equation 62
+:: Решите уравнение \(x^2 + -10x + \\sqrt\{16\} = 0\).
+{=[8, 2]}
+
+:: file: square_equation 63
+:: Решите уравнение \(x^2 + 2x + \\sqrt\{1\} = 0\).
+{=[-1]}
+
+:: file: square_equation 64
+:: Решите уравнение \(x^2 + -8x + \\sqrt\{16\} = 0\).
+{=[4]}
+
+:: file: square_equation 65
+:: Решите уравнение \(x^2 + 4x + \\sqrt\{4\} = 0\).
+{=[-2]}
+
+:: file: square_equation 66
+:: Решите уравнение \(2x^2 + -6x + \\sqrt\{4\} = 0\).
+{=[2, 1]}
+
+:: file: square_equation 67
+:: Решите уравнение \(x^2 + -10x + \\sqrt\{25\} = 0\).
+{=[5]}
+
+:: file: square_equation 68
+:: Решите уравнение \(x^2 + -5x + \\sqrt\{4\} = 0\).
+{=[4, 1]}
+
+:: file: square_equation 69
+:: Решите уравнение \(x^2 + -5x + \\sqrt\{4\} = 0\).
+{=[4, 1]}
+
+:: file: square_equation 70
+:: Решите уравнение \(x^2 + -8x + \\sqrt\{16\} = 0\).
+{=[4]}
+
+:: file: square_equation 71
+:: Решите уравнение \(x^2 + 4x + \\sqrt\{4\} = 0\).
+{=[-2]}
+
+:: file: square_equation 72
+:: Решите уравнение \(2x^2 + -6x + \\sqrt\{4\} = 0\).
+{=[2, 1]}
+
+:: file: square_equation 73
+:: Решите уравнение \(2x^2 + 6x + \\sqrt\{4\} = 0\).
+{=[-1, -2]}
+
+:: file: square_equation 74
+:: Решите уравнение \(x^2 + 8x + \\sqrt\{16\} = 0\).
+{=[-4]}
+
+:: file: square_equation 75
+:: Решите уравнение \(x^2 + 5x + \\sqrt\{4\} = 0\).
+{=[-1, -4]}
+
+:: file: square_equation 76
+:: Решите уравнение \(2x^2 + 6x + \\sqrt\{4\} = 0\).
+{=[-1, -2]}
+
+:: file: square_equation 77
+:: Решите уравнение \(x^2 + -10x + \\sqrt\{16\} = 0\).
+{=[8, 2]}
+
+:: file: square_equation 78
+:: Решите уравнение \(x^2 + 4x + \\sqrt\{4\} = 0\).
+{=[-2]}
+
+:: file: square_equation 79
+:: Решите уравнение \(x^2 + -10x + \\sqrt\{25\} = 0\).
+{=[5]}
+
+:: file: square_equation 80
+:: Решите уравнение \(x^2 + -10x + \\sqrt\{9\} = 0\).
+{=[9, 1]}
+
+:: file: square_equation 81
+:: Решите уравнение \(x^2 + -10x + \\sqrt\{9\} = 0\).
+{=[9, 1]}
+
+:: file: square_equation 82
+:: Решите уравнение \(x^2 + -6x + \\sqrt\{9\} = 0\).
+{=[3]}
+
+:: file: square_equation 83
+:: Решите уравнение \(x^2 + -10x + \\sqrt\{16\} = 0\).
+{=[8, 2]}
+
+:: file: square_equation 84
+:: Решите уравнение \(x^2 + 8x + \\sqrt\{16\} = 0\).
+{=[-4]}
+
+:: file: square_equation 85
+:: Решите уравнение \(2x^2 + -6x + \\sqrt\{4\} = 0\).
+{=[2, 1]}
+
+:: file: square_equation 86
+:: Решите уравнение \(2x^2 + 6x + \\sqrt\{4\} = 0\).
+{=[-1, -2]}
+
+:: file: square_equation 87
+:: Решите уравнение \(x^2 + 4x + \\sqrt\{4\} = 0\).
+{=[-2]}
+
+:: file: square_equation 88
+:: Решите уравнение \(x^2 + -2x + \\sqrt\{1\} = 0\).
+{=[1]}
+
+:: file: square_equation 89
+:: Решите уравнение \(x^2 + -8x + \\sqrt\{16\} = 0\).
+{=[4]}
+
+:: file: square_equation 90
+:: Решите уравнение \(x^2 + 8x + \\sqrt\{16\} = 0\).
+{=[-4]}
+
+:: file: square_equation 91
+:: Решите уравнение \(x^2 + -2x + \\sqrt\{1\} = 0\).
+{=[1]}
+
+:: file: square_equation 92
+:: Решите уравнение \(x^2 + 6x + \\sqrt\{9\} = 0\).
+{=[-3]}
+
+:: file: square_equation 93
+:: Решите уравнение \(x^2 + 5x + \\sqrt\{4\} = 0\).
+{=[-1, -4]}
+
+:: file: square_equation 94
+:: Решите уравнение \(x^2 + -10x + \\sqrt\{9\} = 0\).
+{=[9, 1]}
+
+:: file: square_equation 95
+:: Решите уравнение \(x^2 + -10x + \\sqrt\{25\} = 0\).
+{=[5]}
+
+:: file: square_equation 96
+:: Решите уравнение \(x^2 + -4x + \\sqrt\{4\} = 0\).
+{=[2]}
+
+:: file: square_equation 97
+:: Решите уравнение \(x^2 + -2x + \\sqrt\{1\} = 0\).
+{=[1]}
+
+:: file: square_equation 98
+:: Решите уравнение \(x^2 + 5x + \\sqrt\{4\} = 0\).
+{=[-1, -4]}
+
+:: file: square_equation 99
+:: Решите уравнение \(x^2 + 8x + \\sqrt\{16\} = 0\).
+{=[-4]}

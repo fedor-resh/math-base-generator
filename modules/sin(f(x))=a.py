@@ -1,5 +1,5 @@
 import math
-from solve_square import solution as solve_square
+from square_equation import solution as solve_square
 task = r'$\cos{\pi([a]x^{2} + [b]x + [c])} = [e]$'
 
 ranges = dict(
