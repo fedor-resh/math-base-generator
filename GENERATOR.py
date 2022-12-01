@@ -14,6 +14,23 @@ def get_py_filenames(path='./'):
     return [filename.split('.')[0] for filename in filenames if filename.endswith('.py')]
 
 
+def get_module_names(path):
+    files = get_py_filenames(path)
+
+    def check_module(module_name):
+        try:
+            get_test_arguments(module_name)
+        except AttributeError:
+            return False
+        return True
+
+    files = [file for file in files if check_module(file)]
+    print('Valid modules:')
+    print(*[f'{i + 1}. {files[i]}' for i in range(len(files))] or ['No .py files found'], sep='\n')
+    indexes_of_modules = list(map(int, input('Enter modules to generate, example (1 2 12): ').split()))
+    return [files[i] for i in range(len(files)) if i + 1 in indexes_of_modules]
+
+
 def write_to_file(text, filename, path='.'):
     full_path = f'{path}/{config["generated_tasks_path"]}/{filename}.txt'
     print(f'Wrote to: {full_path}')
@@ -27,15 +44,17 @@ def get_test_arguments(path):
     return module.task, module.ranges, module.solution
 
 
-def handle_answer(answer):
+def prettify_answer(answer):
     if type(answer) is float:
         if int(answer) == answer:
             return f'={int(answer)}'
         return f'={answer} ={str(answer).replace(".", ",")}'
-    if type(answer) is list:
+
+    if (type(answer) is list or type(answer) is tuple) and int(answer[0]) == answer[0]:
         from itertools import permutations
         answer = list(permutations(answer))
-        return f'={"=".join(["".join([handle_answer(j).replace("=", " ") for j in i]).strip() for i in answer])}'
+        return f'={"=".join([" ".join([str(int(j)) for j in i]).strip() + " " for i in answer])}'
+
     return f'={answer}'
 
 
@@ -71,7 +90,7 @@ def get_tasks(task_mask, ranges, solution, amount, name_of_file):
             answer = solution(**variables)
         except Exception as e:
             if not errors:
-                print(f'ERROR: {e} with variables: {variables}')
+                print(f'ERROR: {e} in {task_mask} with {variables}')
                 traceback.print_exc()
             errors += 1
             continue
@@ -81,27 +100,11 @@ def get_tasks(task_mask, ranges, solution, amount, name_of_file):
 
         for key in variables:
             task = task.replace(f'[{key}]', str(variables[key]))
-        task += '\n{' + handle_answer(answer) + '}\n'
+        task += '\n{' + prettify_answer(answer) + '}\n'
 
         tasks.append(prettify_task(task))
+        print(task)
     return tasks
-
-
-def get_module_names(path):
-    files = get_py_filenames(path)
-
-    def check_module(module_name):
-        try:
-            get_test_arguments(module_name)
-        except AttributeError:
-            return False
-        return True
-
-    files = [file for file in files if check_module(file)]
-    print('Valid modules:')
-    print(*[f'{i + 1}. {files[i]}' for i in range(len(files))] or ['No .py files found'], sep='\n')
-    indexes_of_modules = list(map(int, input('Enter modules to generate, example (1 2 12): ').split()))
-    return [files[i] for i in range(len(files)) if i + 1 in indexes_of_modules]
 
 
 def generate_test(
@@ -114,7 +117,6 @@ def generate_test(
     name_of_file = __main__.__file__.split('\\')[-1].split('.')[0]
     params = task_mask.strip(), ranges, solution, amount, name_of_file
     tasks = get_tasks(*params)
-    print(*tasks, sep='\n')
     if create_file:
         write_to_file('\n'.join(tasks), name_of_file, '..')
 
@@ -127,6 +129,5 @@ if __name__ == '__main__':
         task_mask, ranges, solution = get_test_arguments(module_name)
         params = task_mask.strip(), ranges, solution, config['amount_of_tasks'], module_name
         tasks += get_tasks(*params)
-    print(*tasks, sep='\n')
     if config['create_file']:
         write_to_file('\n'.join(tasks), '00 Several_tests' if len(module_names) > 1 else module_names[0])
