@@ -32,6 +32,10 @@ def handle_answer(answer):
         if int(answer) == answer:
             return f'={int(answer)}'
         return f'={answer} ={str(answer).replace(".", ",")}'
+    if type(answer) is list:
+        from itertools import permutations
+        answer = list(permutations(answer))
+        return f'={"=".join(["".join([handle_answer(j).replace("=", " ") for j in i]).strip() for i in answer])}'
     return f'={answer}'
 
 
@@ -43,11 +47,13 @@ def get_params(func):
 def prettify_task(task):
     return re.sub(r'1([a-zA-Z])', r'\1', task)
 
+
 def prettify_ranges(ranges):
     for key in ranges:
         ranges[key] = list(ranges[key])
         ranges[key] = [i for i in ranges[key] if i != 0]
     return ranges
+
 
 def get_tasks(task_mask, ranges, solution, amount, name_of_file):
     errors = 0

@@ -41,10 +41,9 @@ def solution(a, b, c, d):
         roots.append(-u * math.cos(v - math.pi / 3) - b / (3 * a))
     roots = [round(root, 6) for root in roots]
     if len(set(roots)) == 3 and all([root % 1 == 0 for root in roots]):
-        return sum(roots)
+        return roots
 
 
 if __name__ == '__main__':
     import GENERATOR
-
     GENERATOR.generate_test(task, ranges, solution, amount=20)
