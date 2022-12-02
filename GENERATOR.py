@@ -47,15 +47,15 @@ def get_test_arguments(path):
 def prettify_answer(answer):
     if type(answer) is float:
         if int(answer) == answer:
-            return f'={int(answer)}'
-        return f'={answer} ={str(answer).replace(".", ",")}'
+            return f'{int(answer)}'
+        return f'{answer} ={str(answer).replace(".", ",")}'
 
     if (type(answer) is list or type(answer) is tuple) and int(answer[0]) == answer[0]:
         from itertools import permutations
-        answer = list(permutations(answer))
-        return f'={"=".join([" ".join([str(int(j)) for j in i]).strip() + " " for i in answer])}'
+        perm = list(permutations(answer))
+        return f'{"=".join([" ".join([str(int(item)) for item in answer]) + " " for answer in perm])}'
 
-    return f'={answer}'
+    return f'{answer}'
 
 
 def get_params(func):
@@ -100,7 +100,7 @@ def get_tasks(task_mask, ranges, solution, amount, name_of_file):
 
         for key in variables:
             task = task.replace(f'[{key}]', str(variables[key]))
-        task += '\n{' + prettify_answer(answer) + '}\n'
+        task += '\n{=' + prettify_answer(answer) + '}\n'
 
         tasks.append(prettify_task(task))
         print(task)

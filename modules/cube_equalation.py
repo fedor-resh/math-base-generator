@@ -17,8 +17,7 @@ def NOD(a, b):
 
 
 def solution(a, b, c, d):
-    # if NOD(a, NOD(b, NOD(c, d))) != 1:
-    #     return
+
     roots = []
 
     # solve cubic equation
