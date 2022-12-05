@@ -1,10 +1,4 @@
-task = r'x > [a]'
-ranges = dict(
-    a=[i / 10 for i in range(-100, 100)],
-)
-
-
-def solution(a):
+def solve_inequality(a):
     answer = ''
     prev = None
     for x in range(-1000, 1000):
@@ -29,9 +23,3 @@ def solution(a):
         else:
             print('Error')
     return answer
-
-if __name__ == '__main__':
-    from GENERATOR import generate_test
-
-    generate_test(task, ranges, solution)
-

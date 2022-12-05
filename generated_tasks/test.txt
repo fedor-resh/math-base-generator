@@ -1,0 +1,39 @@
+:: file: test 0
+:: x > 8.0
+{=[8;+inf)}
+
+:: file: test 1
+:: x > 5.0
+{=[5;+inf)}
+
+:: file: test 2
+:: x > 4.0
+{=[4;+inf)}
+
+:: file: test 3
+:: x > 5.0
+{=[5;+inf)}
+
+:: file: test 4
+:: x > -4.0
+{=[-4;+inf)}
+
+:: file: test 5
+:: x > -3.0
+{=[-3;+inf)}
+
+:: file: test 6
+:: x > 8.0
+{=[8;+inf)}
+
+:: file: test 7
+:: x > -9.0
+{=[-9;+inf)}
+
+:: file: test 8
+:: x > -7.0
+{=[-7;+inf)}
+
+:: file: test 9
+:: x > -2.0
+{=[-2;+inf)}
