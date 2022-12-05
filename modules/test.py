@@ -1,34 +1,18 @@
-task = r'x > [a]'
+from solution_templates import solve_inequality
+
+task = r'[a]x^3 + [b]x^2 + [c]x + [d] > 0'
 ranges = dict(
-    a=[i / 10 for i in range(-100, 100)],
+    a=range(-3, 3),
+    b=range(-5, 5),
+    c=range(-20, 20),
+    d=range(-20, 20),
 )
 
-
-def solution(a):
-    answer = ''
-    prev = None
-    for x in range(-1000, 1000):
-        analize = [x - 0.0000001 >= a, x >= a, x + 0.0000001 >= a]
-        if prev and x == 999:
-            answer += '+inf)'
-        if prev and x == -999:
-            answer += '(-inf,'
-        if all(analize) or not any(analize):
-            continue
-        prev = analize[2]
-        if analize[1] == analize[2] == True:
-            answer += f'[{x};'
-        elif analize[0] == analize[1] == True:
-            answer += f'{x}]'
-        elif analize[2]:
-            answer += f'({x};'
-        elif analize[0]:
-            answer += f'{x})'
-        elif analize[1]:
-            answer += f'{{{x}}}'
-        else:
-            print('Error')
-    return answer
+def solution(a, b, c, d):
+    from solution_templates import find_roots_of_polynomial
+    if not len(find_roots_of_polynomial(a, b, c, d)) == 3:
+        return
+    return solve_inequality(lambda x: a * x ** 3 + b * x ** 2 + c * x + d > 0)
 
 if __name__ == '__main__':
     from GENERATOR import generate_test
