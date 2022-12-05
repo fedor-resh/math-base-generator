@@ -1,4 +1,4 @@
-from solution_templates import solve_inequality
+from templates import get_solution_of_inequality
 
 task = r'[a]x^3 + [b]x^2 + [c]x + [d] > 0'
 ranges = dict(
@@ -9,10 +9,9 @@ ranges = dict(
 )
 
 def solution(a, b, c, d):
-    from solution_templates import find_roots_of_polynomial
-    if not len(find_roots_of_polynomial(a, b, c, d)) == 3:
-        return
-    return solve_inequality(lambda x: a * x ** 3 + b * x ** 2 + c * x + d > 0)
+    from templates import get_roots_of_polynomial
+    if len(get_roots_of_polynomial(a, b, c, d)) == 3:
+        return get_solution_of_inequality(lambda x: a * x ** 3 + b * x ** 2 + c * x + d >= 0)
 
 if __name__ == '__main__':
     from GENERATOR import generate_test
