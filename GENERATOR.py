@@ -58,12 +58,15 @@ def prettify_answer(answer):
     return f'{answer}'
 
 
-def get_params(func):
-    import inspect
-    return inspect.getfullargspec(func)[0]
+def get_params(task):
+    import re
+    return re.findall(r'\[([a-zA-Z])\]', task)
+    # import inspect
+    # return inspect.getfullargspec(func)[0]
 
 
 def prettify_task(task):
+    task = task.replace('+-', '-')
     return re.sub(r'1([a-zA-Z])', r'\1', task)
 
 
@@ -73,17 +76,43 @@ def prettify_ranges(ranges):
         ranges[key] = [i for i in ranges[key] if i != 0]
     return ranges
 
+def get_max_nulls(task_mask):
+    import templates
+    nulls = 0
+    for i in range(1, 10):
+        try:
+            get_tasks(
+                task_mask,
+                {}, templates.get_solution(task_mask, nulls=i),
+                1,'find_nulls',
+                iterations=10000
+            )
+            nulls = i
+        except:
+            break
+    print('found nulls:', nulls)
+    return nulls
 
-def get_tasks(task_mask, ranges, solution, amount, name_of_file):
+
+def get_tasks(task_mask, ranges, solution, amount, name_of_file, iterations=100000):
+    if solution is None:
+        import templates
+        nulls = get_max_nulls(task_mask)
+        solution = templates.get_solution(task_mask, nulls=nulls)
     errors = 0
     ranges = prettify_ranges(ranges)
     tasks = []
-    params = get_params(solution)
+    params = get_params(task_mask)
     task_mask = latex_to_tex(task_mask)
+    default_range = list(set(range(-10, 10)) - {0, 1, -1})
     while len(tasks) < amount:
+        if not tasks:
+            iterations -= 1
+            if iterations == 0:
+                raise Exception('iterations limit reached')
         variables = {
             key: ranges[key][randint(0, len(ranges[key]) - 1)]
-            if key in ranges else randint(2, 10)
+            if key in ranges else default_range[randint(0, len(default_range) - 1)]
             for key in params
         }
         try:
@@ -92,6 +121,7 @@ def get_tasks(task_mask, ranges, solution, amount, name_of_file):
             if not errors:
                 print(f'ERROR: {e} in {task_mask} with {variables}')
                 traceback.print_exc()
+                print('continue generate')
             errors += 1
             continue
         if not answer: continue
@@ -101,16 +131,16 @@ def get_tasks(task_mask, ranges, solution, amount, name_of_file):
         for key in variables:
             task = task.replace(f'[{key}]', str(variables[key]))
         task += '\n{=' + prettify_answer(answer) + '}\n'
-
-        tasks.append(prettify_task(task))
+        task = prettify_task(task)
+        tasks.append(task)
         print(task)
     return tasks
 
 
 def generate_test(
         task_mask: str,
-        ranges: dict,
-        solution: callable,
+        ranges: dict = {},
+        solution=None,
         amount: int = config['amount_of_tasks'],
         create_file: bool = config['create_file'],
 ):

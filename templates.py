@@ -1,9 +1,11 @@
-def get_integer_roots(func, RANGE=range(-100, 100)):
+def get_integer_roots(func, RANGE=range(-10, 10), nulls=0):
     roots = []
     for x in RANGE:
         if func(x):
             roots.append(x)
-    return roots
+            nulls -= 1
+    if nulls <= 0:
+        return roots
 
 
 def get_roots_of_polynomial(a=None, b=None, c=None, d=None):
@@ -15,7 +17,7 @@ def get_roots_of_polynomial(a=None, b=None, c=None, d=None):
     '''
     coefficients = list(filter(lambda x: x is not None, [a, b, c, d]))
     if len(coefficients) == 2:
-        return [-c / b]
+        return [-b / a]
     if len(coefficients) == 3:
         D = b ** 2 - 4 * a * c
         if D < 0:
@@ -51,7 +53,7 @@ def get_roots_of_polynomial(a=None, b=None, c=None, d=None):
         return roots
 
 
-def get_solution_of_inequality(func, RANGE=range(-100, 100), min_slices=0):
+def get_solution_of_inequality(func, RANGE=range(-10, 10), nulls=0):
     '''
     :param func: inequality function
     :param RANGE: range of enumeration
@@ -77,7 +79,7 @@ def get_solution_of_inequality(func, RANGE=range(-100, 100), min_slices=0):
         prev = analize[2]
         if all(analize) or not any(analize):
             continue
-        min_slices -= 1
+        nulls -= 1
         if analize[1] == analize[2] == True:
             answer += f'[{x};'
         elif analize[0] == analize[1] == True:
@@ -92,5 +94,30 @@ def get_solution_of_inequality(func, RANGE=range(-100, 100), min_slices=0):
             answer += f'{{{x}}}u'
         else:
             print('Error')
-    if min_slices <= 0:
+    if nulls <= 0 and answer[-1] == 'u':
         return answer[:-1]
+
+
+def get_solution(latex, RANGE=range(-10, 10), nulls=0):
+    from latex import latex_to_python
+    pythonn = latex_to_python(latex)
+    if '>=' in pythonn:
+        f = get_solution_of_inequality
+    else:
+        pythonn = pythonn.replace('=', '==')
+        f = get_integer_roots
+
+    def solution(**kwargs):
+        python = pythonn
+        for key, value in kwargs.items():
+            python = python.replace(key, str(value))
+        return f(lambda x: eval(python), RANGE=RANGE, nulls=nulls)
+    return solution
+
+
+if __name__ == '__main__':
+    def f(**kwargs):
+        print(kwargs)
+
+
+    f(a=1, b=2)
