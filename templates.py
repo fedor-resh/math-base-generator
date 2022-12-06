@@ -1,4 +1,4 @@
-def get_integer_roots(func, RANGE=range(-1000, 1000)):
+def get_integer_roots(func, RANGE=range(-100, 100)):
     roots = []
     for x in RANGE:
         if func(x):
@@ -51,7 +51,7 @@ def get_roots_of_polynomial(a=None, b=None, c=None, d=None):
         return roots
 
 
-def get_solution_of_inequality(func, RANGE=range(-1000, 1000)):
+def get_solution_of_inequality(func, RANGE=range(-100, 100), min_slices=0):
     '''
     :param func: inequality function
     :param RANGE: range of enumeration
@@ -67,6 +67,7 @@ def get_solution_of_inequality(func, RANGE=range(-1000, 1000)):
                 return
         except ZeroDivisionError:
             analize = [func(x - 0.000001), False, func(x + 0.000001)]
+
         if analize[1] and x == RANGE[-1]:
             answer += '+inf)u'
         if analize[1] and x == RANGE[0]:
@@ -76,6 +77,7 @@ def get_solution_of_inequality(func, RANGE=range(-1000, 1000)):
         prev = analize[2]
         if all(analize) or not any(analize):
             continue
+        min_slices -= 1
         if analize[1] == analize[2] == True:
             answer += f'[{x};'
         elif analize[0] == analize[1] == True:
@@ -90,4 +92,5 @@ def get_solution_of_inequality(func, RANGE=range(-1000, 1000)):
             answer += f'{{{x}}}u'
         else:
             print('Error')
-    return answer[:-1]
+    if min_slices <= 0:
+        return answer[:-1]
