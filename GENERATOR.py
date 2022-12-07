@@ -85,7 +85,7 @@ def get_max_nulls(task_mask):
                 task_mask,
                 {}, templates.get_solution(task_mask, nulls=i),
                 1,'find_nulls',
-                iterations=10000
+                iterations=20000
             )
             nulls = i
         except:

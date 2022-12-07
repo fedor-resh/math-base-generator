@@ -1,3 +1,4 @@
+import math
 def get_integer_roots(func, RANGE=range(-10, 10), nulls=0):
     roots = []
     for x in RANGE:
@@ -6,6 +7,7 @@ def get_integer_roots(func, RANGE=range(-10, 10), nulls=0):
             nulls -= 1
     if nulls <= 0:
         return roots
+
 
 
 def get_roots_of_polynomial(a=None, b=None, c=None, d=None):
@@ -98,20 +100,20 @@ def get_solution_of_inequality(func, RANGE=range(-10, 10), nulls=0):
         return answer[:-1]
 
 
-def get_solution(latex, RANGE=range(-10, 10), nulls=0):
+def get_solution(latex, **rest):
     from latex import latex_to_python
-    pythonn = latex_to_python(latex)
-    if '>=' in pythonn:
+    python = latex_to_python(latex)
+    if '>=' in python:
         f = get_solution_of_inequality
     else:
-        pythonn = pythonn.replace('=', '==')
+        python = python.replace('=', '==')
         f = get_integer_roots
-
+    from GENERATOR import get_params
+    params = get_params(python)
+    python = python.replace('[', '').replace(']', '')
+    foo = eval('lambda ' + ','.join(params) + ':' + 'lambda x:' + python)
     def solution(**kwargs):
-        python = pythonn
-        for key, value in kwargs.items():
-            python = python.replace(key, str(value))
-        return f(lambda x: eval(python), RANGE=RANGE, nulls=nulls)
+        return f(foo(**kwargs), **rest)
     return solution
 
 
