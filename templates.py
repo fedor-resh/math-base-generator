@@ -99,19 +99,22 @@ def get_solution_of_inequality(func, RANGE=range(-10, 10), nulls=0):
     if nulls <= 0 and answer[-1] == 'u':
         return answer[:-1]
 
-
+def latex_to_function(latex):
+    from latex import latex_to_python
+    from GENERATOR import get_params
+    params = get_params(latex)
+    python = latex_to_python(latex)
+    print(params)
+    foo = eval('lambda ' + ','.join(params) + ':' + 'lambda x:' + python)
+    return foo
 def get_solution(latex, **rest):
     from latex import latex_to_python
     python = latex_to_python(latex)
-    if '>=' in python:
+    if '>=' in python or '<=' in python or '>' in python or '<' in python:
         f = get_solution_of_inequality
     else:
-        python = python.replace('=', '==')
         f = get_integer_roots
-    from GENERATOR import get_params
-    params = get_params(python)
-    python = python.replace('[', '').replace(']', '')
-    foo = eval('lambda ' + ','.join(params) + ':' + 'lambda x:' + python)
+    foo = latex_to_function(latex)
     def solution(**kwargs):
         return f(foo(**kwargs), **rest)
     return solution

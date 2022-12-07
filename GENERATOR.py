@@ -2,7 +2,7 @@ import logging
 import re
 import traceback
 from random import randint
-from latex import latex_to_tex
+from latex import latex_to_tex, render_latex
 from config import config
 import sys
 import __main__
@@ -31,12 +31,13 @@ def get_module_names(path):
     return [files[i] for i in range(len(files)) if i + 1 in indexes_of_modules]
 
 
-def write_to_file(text, filename, path='.'):
+def write_to_file(text, filename, path='.', add=False):
     full_path = f'{path}/{config["generated_tasks_path"]}/{filename}.txt'
     print(f'Wrote to: {full_path}')
-    output = open(full_path, 'w', encoding='utf-8')
-    output.write(text)
+    output = open(full_path, 'a' if add else 'w', encoding='utf-8')
+    output.write(text+'\n')
     output.close()
+
 
 
 def get_test_arguments(path):
@@ -94,7 +95,7 @@ def get_max_nulls(task_mask):
     return nulls
 
 
-def get_tasks(task_mask, ranges, solution, amount, name_of_file, iterations=100000):
+def get_tasks(task_mask, ranges, solution, amount, name_of_file, iterations=10000):
     if solution is None:
         import templates
         nulls = get_max_nulls(task_mask)
@@ -143,21 +144,27 @@ def generate_test(
         solution=None,
         amount: int = config['amount_of_tasks'],
         create_file: bool = config['create_file'],
+        add = False,
 ):
+    render_latex(task_mask)
     name_of_file = __main__.__file__.split('\\')[-1].split('.')[0]
     params = task_mask.strip(), ranges, solution, amount, name_of_file
     tasks = get_tasks(*params)
     if create_file:
-        write_to_file('\n'.join(tasks), name_of_file, '..')
+        write_to_file('\n'.join(tasks), name_of_file, '..', add=add)
 
 
 if __name__ == '__main__':
     sys.path.insert(0, config['modules_path'])  # чтобы импортировать модуль из этой папки
     module_names = get_module_names(config['modules_path'])
-    tasks = []
     for module_name in module_names:
         task_mask, ranges, solution = get_test_arguments(module_name)
+        render_latex(task_mask)
         params = task_mask.strip(), ranges, solution, config['amount_of_tasks'], module_name
-        tasks += get_tasks(*params)
-    if config['create_file']:
-        write_to_file('\n'.join(tasks), '00 Several_tests' if len(module_names) > 1 else module_names[0])
+        tasks = get_tasks(*params)
+        if config['create_file']:
+            write_to_file(
+                '\n'.join(tasks),
+                '00 Several_tests' if len(module_names) > 1 else module_names[0],
+                add=True
+            )

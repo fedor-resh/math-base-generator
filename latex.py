@@ -4,7 +4,6 @@ def latex_to_tex(text):
     parts = text.split('$')
     for i in range(1, len(parts), 2):
         parts[i] = parts[i].replace('*', r'\cdot')
-        render_latex(parts[i])
         parts[i] = parts[i].replace(r'\frac', r'\\dfrac') \
             .replace(r'\sqrt', r'\\sqrt') \
             .replace(r'\left', r'\\left') \
@@ -20,19 +19,27 @@ def latex_to_tex(text):
 
 def latex_to_python(latex):
     """:return: python string"""
+    if '$' in latex:
+        latex = re.match(r'.*\$(.+)\$.*', latex).group(1)
     latex = re.sub(r'\^\{([^}]+)\}', r'**\1', latex)
+    latex = re.sub(r'\^(\d+)', r'**\1', latex)
     latex = re.sub(r'\\frac\{([^}]+)\}\{([^}]+)\}', r'(\1)/(\2)', latex)
     latex = re.sub(r'\\sqrt\{([^}]+)\}', r'(\1)**0.5', latex)
     latex = re.sub(r'\[([a-z])\]([a-z])', r'[\1]*\2', latex)
-    latex = re.sub(r'\\([a-z]+)\{([^}]+)\}', r'math.\1(\2)', latex)
-    latex = re.sub(r'\\([a-z]+)', r'math.\1', latex)
     latex = latex \
+        .replace(r'=', '==') \
         .replace('\\cdot', '*') \
         .replace('\\left', '') \
         .replace('\\right', '') \
         .replace('\\geq', '>=') \
         .replace('\\leq', '<=') \
-        .replace('$', '')
+        .replace('$', '')\
+        .replace('[','') \
+        .replace(']', '')
+    latex = re.sub(r'\\([a-z]+)\{([^}]+)\}', r'math.\1(\2)', latex)
+    latex = re.sub(r'\\([a-z]+)', r'math.\1', latex)
+
+
     python_string = latex
     return python_string
 
@@ -67,10 +74,17 @@ def python_to_latex(python):
 
 
 def render_latex(tex):
+    import re
     print('render_latex')
+    print(tex)
+    try:
+        tex = re.match(r'.*\$(.+)\$.*', tex).group(1)
+    except:
+        pass
+    print(tex)
     try:
         import matplotlib.pyplot as plt
-        tex = f'${tex}$'
+        tex = '$' + tex + '$'
         # Создание области отрисовки
         fig = plt.figure()
         ax = fig.add_axes([0, 0, 1, 1])
@@ -103,5 +117,5 @@ def solve_latex_expression(latex):
 
 
 if __name__ == '__main__':
-    print(latex_to_python(r'\sqrt{2+1}'))
+    print(latex_to_python(r'\(2*\sqrt{2}\)'))
 
