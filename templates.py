@@ -55,7 +55,7 @@ def get_roots_of_polynomial(a=None, b=None, c=None, d=None):
         return roots
 
 
-def get_solution_of_inequality(func, RANGE=range(-10, 10), nulls=0):
+def get_answer_of_inequality(func, RANGE=range(-10, 10), nulls=0):
     '''
     :param func: inequality function
     :param RANGE: range of enumeration
@@ -69,7 +69,7 @@ def get_solution_of_inequality(func, RANGE=range(-10, 10), nulls=0):
             if not type(analize[0]) == bool:
                 print('Error: function must return bool')
                 return
-        except ZeroDivisionError:
+        except:
             analize = [func(x - 0.000001), False, func(x + 0.000001)]
 
         if analize[1] and x == RANGE[-1]:
@@ -104,20 +104,19 @@ def latex_to_function(latex):
     from GENERATOR import get_params
     params = get_params(latex)
     python = latex_to_python(latex)
-    print(params)
     foo = eval('lambda ' + ','.join(params) + ':' + 'lambda x:' + python)
     return foo
+
 def get_solution(latex, **rest):
     from latex import latex_to_python
     python = latex_to_python(latex)
     if '>=' in python or '<=' in python or '>' in python or '<' in python:
-        f = get_solution_of_inequality
+        f = get_answer_of_inequality
     else:
         f = get_integer_roots
     foo = latex_to_function(latex)
-    def solution(**kwargs):
-        return f(foo(**kwargs), **rest)
-    return solution
+
+    return lambda **kwargs: f(foo(**kwargs), **rest)
 
 
 if __name__ == '__main__':
