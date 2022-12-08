@@ -1,9 +1,11 @@
 from templates import get_integer_roots, latex_to_function
 from GENERATOR import generate_test
+
 latex = r'$\sqrt{[a]x^{2}+[b]x+[c]} \cdot ([d]x^{2}+[e]x+[f]) > 0$'
 
 foo = latex_to_function(latex)
 task = r'Найдите максимальное целое решение' + latex
+
 
 def solution(**k):
     roots = get_integer_roots(foo(**k), RANGE=range(-100, 100))
@@ -11,9 +13,9 @@ def solution(**k):
         return max(roots)
 
 
-generate_test(task,{},solution, add=True)
-
+generate_test(task, {}, solution, add=True)
 task = r'Найдите количество целых решений ' + latex
+
 
 def solution(**k):
     roots = get_integer_roots(foo(**k), RANGE=range(-100, 100))
@@ -21,10 +23,10 @@ def solution(**k):
         return len(roots)
 
 
-generate_test(task,{},solution, add=True)
-
+generate_test(task, {}, solution, add=True)
 
 task = r'Найдите сумму целых решений ' + latex
+
 
 def solution(**k):
     roots = get_integer_roots(foo(**k), RANGE=range(-100, 100))
@@ -32,4 +34,4 @@ def solution(**k):
         return sum(roots)
 
 
-generate_test(task,{},solution, add=True)
+generate_test(task, {}, solution, add=True)
