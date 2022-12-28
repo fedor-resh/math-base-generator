@@ -1,29 +1,33 @@
 task = '''
-Решите уравнение $[a]x^2 + [b]x + \sqrt{[c]} = 0$.
+Введите корни уравнения через пробел $[a]x^2 + [b]x + [c] = 0$.
 '''
 
 ranges = dict(
     a=range(1, 3),
     b=range(-10, 10),
-    c=list(map(lambda x: x ** 2, range(1, 10))),
+    c=range(-10, 10),
 )
 
 
 # если возвращает None, то не добавляет в тесты
-def solution(a, b, c):
+def solve_square(a, b, c):
     d = b ** 2 - 4 * a * c
     if d < 0:
         return []
     elif d == 0:
         x = (-b + (b ** 2 - 4 * a * c) ** 0.5) / 2 * a
-        if x % 1 == 0:
-            return [int(x)]
+        return [x]
     else:
         x1 = (-b + ((b ** 2) - (4 * (a * c))) ** 0.5) / (2 * a)
         x2 = (-b - ((b ** 2) - (4 * (a * c))) ** 0.5) / (2 * a)
-        if not x1 % 1 and not x2 % 1:
-            return [int(x1), int(x2)]
+        return [x1, x2]
     return []
+
+def solution(a, b, c):
+    roots = solve_square(a, b, c)
+    if roots and [int(i) for i in roots] == roots:
+        return roots
+
 if __name__ == '__main__':
     from GENERATOR import generate_test
 
