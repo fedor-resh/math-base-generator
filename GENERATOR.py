@@ -34,9 +34,12 @@ def get_module_names(path):
 def write_to_file(text, filename, path='.', add=False):
     full_path = f'{path}/{config["generated_tasks_path"]}/{filename}.txt'
     print(f'Wrote to: {full_path}')
-    output = open(full_path, 'a' if add else 'w', encoding='utf-8')
-    output.write(text+'\n')
-    output.close()
+    # print(full_path)
+    # print(config["generated_tasks_path"])
+    # print(open(f'{config["generated_tasks_path"][2:]}/{filename}.txt'))
+    # output = open(full_path, 'a' if add else 'w', encoding='utf-8')
+    # output.write(text+'\n')
+    # output.close()
 
 
 
@@ -95,7 +98,7 @@ def get_max_nulls(task_mask):
     return nulls
 
 
-def get_tasks(task_mask, ranges, solution, amount, name_of_file, iterations=10000):
+def get_tasks(task_mask, ranges, solution, amount, name_of_file, iterations=100000):
     if solution is None:
         import templates
         nulls = get_max_nulls(task_mask)
@@ -147,7 +150,7 @@ def generate_test(
         add = False,
 ):
     render_latex(task_mask)
-    name_of_file = __main__.__file__.split('\\')[-1].split('.')[0]
+    name_of_file = __main__.__file__.replace('/', '\\').split('\\')[-1].split('.')[0]
     params = task_mask.strip(), ranges, solution, amount, name_of_file
     tasks = get_tasks(*params)
     if create_file:
