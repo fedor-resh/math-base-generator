@@ -8,14 +8,7 @@ task = r'''
 '''
 
 ranges = dict(
-    a=range(-16, 17),
-    b=range(-16, 17),
-    c=range(2, 17),
-    d=range(-16, 17),
-    e=range(-16, 17),
-    f=range(-16, 17),
-    g=range(2, 17),
-    h=range(-16, 17),
+
 )
 
 

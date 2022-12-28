@@ -95,7 +95,7 @@ def get_max_nulls(task_mask):
     return nulls
 
 
-def get_tasks(task_mask, ranges, solution, amount, name_of_file, iterations=100000):
+def get_tasks(task_mask, ranges, solution, amount, name_of_file, iterations=10000000):
     if solution is None:
         import templates
         nulls = get_max_nulls(task_mask)
