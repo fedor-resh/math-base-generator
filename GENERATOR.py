@@ -34,12 +34,9 @@ def get_module_names(path):
 def write_to_file(text, filename, path='.', add=False):
     full_path = f'{path}/{config["generated_tasks_path"]}/{filename}.txt'
     print(f'Wrote to: {full_path}')
-    # print(full_path)
-    # print(config["generated_tasks_path"])
-    # print(open(f'{config["generated_tasks_path"][2:]}/{filename}.txt'))
-    # output = open(full_path, 'a' if add else 'w', encoding='utf-8')
-    # output.write(text+'\n')
-    # output.close()
+    output = open(full_path, 'a' if add else 'w', encoding='utf-8')
+    output.write(text+'\n')
+    output.close()
 
 
 
