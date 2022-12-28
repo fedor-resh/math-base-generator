@@ -99,5 +99,5 @@ def solve_latex_expression(latex):
 
 
 if __name__ == '__main__':
-    pass
+    print(latex_to_tex(r'$\sqrt{\left(-x^2-6 x-8\right)} \geq \frac{3 x+9}{-9-3 x}$'))
 
