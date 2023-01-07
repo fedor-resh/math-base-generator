@@ -18,10 +18,10 @@ def get_module_names(path):
     files = get_py_filenames(path)
 
     def check_module(module_name):
-        try:
-            get_test_arguments(module_name)
-        except AttributeError:
-            return False
+        # try:
+        #     get_test_arguments(module_name)
+        # except AttributeError:
+        #     return False
         return True
 
     files = [file for file in files if check_module(file)]
