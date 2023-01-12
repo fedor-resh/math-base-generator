@@ -6,7 +6,7 @@ def replace_numbers_by_variables(string):
     import re
     from string import ascii_lowercase
     for letter in ascii_lowercase:
-        new = re.sub(r'(\d+)', r'[{}]'.format(letter), string, 1)
+        new = re.sub(r'([23456789]|\d{2,})', r'[{}]'.format(letter), string, 1)
         if new != string: string = new
         else: break
     return string

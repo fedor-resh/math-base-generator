@@ -79,6 +79,8 @@ def prettify_ranges(ranges):
     return ranges
 
 def get_max_nulls(task_mask):
+    if not 'x' in task_mask:
+        return
     import templates
     nulls = 0
     for i in range(1, 10):
@@ -97,14 +99,18 @@ def get_max_nulls(task_mask):
 
 
 def get_tasks(task_mask, ranges, solution, amount, name_of_file, iterations=1000000):
-    if solution is None:
-        import templates
-        nulls = get_max_nulls(task_mask)
-        solution = templates.get_solution(task_mask, nulls=nulls)
     errors = 0
     ranges = prettify_ranges(ranges)
     tasks = []
     params = get_params(task_mask)
+    if not params:
+        from utils import replace_numbers_by_variables
+        task_mask = replace_numbers_by_variables(task_mask)
+        params = get_params(task_mask)
+    if solution is None:
+        import templates
+        nulls = get_max_nulls(task_mask)
+        solution = templates.get_solution(task_mask, nulls=nulls)
     task_mask = latex_to_tex(task_mask)
     default_range = list(set(range(-10, 10)) - {0, 1, -1})
     while len(tasks) < amount:
