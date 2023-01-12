@@ -128,6 +128,4 @@ def get_solution(latex, **rest):
 if __name__ == '__main__':
     def f(**kwargs):
         print(kwargs)
-
-
     f(a=1, b=2)
