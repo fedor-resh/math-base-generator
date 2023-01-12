@@ -61,7 +61,8 @@ def prettify_answer(answer):
 
 def get_params(task):
     import re
-    return re.findall(r'\[([a-zA-Z])\]', task)
+    letters = re.findall(r'\[([a-zA-Z])\]', task)
+    return list(set(letters))
     # import inspect
     # return inspect.getfullargspec(func)[0]
 
@@ -95,7 +96,7 @@ def get_max_nulls(task_mask):
     return nulls
 
 
-def get_tasks(task_mask, ranges, solution, amount, name_of_file, iterations=10000000):
+def get_tasks(task_mask, ranges, solution, amount, name_of_file, iterations=1000000):
     if solution is None:
         import templates
         nulls = get_max_nulls(task_mask)
@@ -155,6 +156,7 @@ def generate_test(
 
 
 if __name__ == '__main__':
+    print('Enter path to modules')
     sys.path.insert(0, config['modules_path'])  # чтобы импортировать модуль из этой папки
     module_names = get_module_names(config['modules_path'])
     for module_name in module_names:

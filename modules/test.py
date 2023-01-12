@@ -1,2 +1,2 @@
 from GENERATOR import generate_test
-generate_test(r'Решите уравнение $\frac{[a]x^{2} + [b]x + [c]}{[d]x^{2} + [e]x + [f]} = 0$')
+generate_test(r'Решите уравнение $[a]x^{3}+[b]x^{2}+[c]x+[d]=0$')

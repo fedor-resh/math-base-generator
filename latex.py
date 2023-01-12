@@ -1,10 +1,11 @@
 import re
 
+
 def latex_to_tex(text):
     parts = text.split('$')
     for i in range(1, len(parts), 2):
         parts[i] = parts[i].replace('*', r'\cdot')
-        parts[i] = parts[i].replace(r'\frac', r'\\dfrac') \
+        parts[i] = parts[i].replace(r'\frac', r'\\frac') \
             .replace(r'\sqrt', r'\\sqrt') \
             .replace(r'\left', r'\\left') \
             .replace(r'\right', r'\\right') \
@@ -17,14 +18,23 @@ def latex_to_tex(text):
 
     return text
 
+
+in_brackets = re.compile(r'\((=?[^{}]*(\([^{}]*\))*[^{}]*)*\)')
+
+brackets = r'\{([^{}]*(?:(?:\{[^{}]*\})*[^{}]*)*[^{}]*)\}'
+
 def latex_to_python(latex):
     """:return: python string"""
     if '$' in latex:
         latex = re.match(r'.*\$(.+)\$.*', latex).group(1)
-    latex = re.sub(r'\^\{([^}]+)\}', r'**\1', latex)
+    while '\log' in latex:
+        latex = re.sub(r'\\log_'+brackets*2, r'__import__("math").log(\2, \1)', latex)
+        latex = re.sub(r'\\log\^'+brackets+'_'+brackets*2, r'__import__("math").log(\3, \2)**\1', latex)
+
+    latex = re.sub(r'\^'+brackets, r'**(\1)', latex)
     latex = re.sub(r'\^(\d+)', r'**\1', latex)
-    latex = re.sub(r'\\frac\{([^}]+)\}\{([^}]+)\}', r'(\1)/(\2)', latex)
-    latex = re.sub(r'\\sqrt\{([^}]+)\}', r'(\1)**0.5', latex)
+    latex = re.sub(r'\\frac'+brackets*2, r'(\1)/(\2)', latex)
+    latex = re.sub(r'\\sqrt'+brackets, r'(\1)**0.5', latex)
     latex = re.sub(r'\[([a-z])\]([a-z])', r'[\1]*\2', latex)
     latex = latex \
         .replace(r'=', '==') \
@@ -33,12 +43,11 @@ def latex_to_python(latex):
         .replace('\\right', '') \
         .replace('\\geq', '>=') \
         .replace('\\leq', '<=') \
-        .replace('$', '')\
-        .replace('[','') \
+        .replace('$', '') \
+        .replace('[', '') \
         .replace(']', '')
-    latex = re.sub(r'\\([a-z]+)\{([^}]+)\}', r'math.\1(\2)', latex)
+    latex = re.sub(r'\\([a-z]+)'+brackets, r'math.\1(\2)', latex)
     latex = re.sub(r'\\([a-z]+)', r'math.\1', latex)
-
 
     python_string = latex
     return python_string
@@ -117,5 +126,4 @@ def solve_latex_expression(latex):
 
 
 if __name__ == '__main__':
-    print(latex_to_python(r'\(2*\sqrt{2}\)'))
-
+    print(latex_to_python(r'\log_{2}{8}'))
