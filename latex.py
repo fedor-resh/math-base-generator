@@ -49,6 +49,7 @@ def latex_to_python(latex):
     latex = re.sub(r'\\([a-z]+)', r'math.\1', latex)
 
     python_string = latex
+    print(python_string)
     return python_string
 
 
