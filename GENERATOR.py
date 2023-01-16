@@ -61,7 +61,8 @@ def prettify_answer(answer):
 
 def get_params(task):
     import re
-    return re.findall(r'\[([a-zA-Z])\]', task)
+    letters = re.findall(r'\[([a-zA-Z])\]', task)
+    return list(set(letters))
     # import inspect
     # return inspect.getfullargspec(func)[0]
 
@@ -78,6 +79,8 @@ def prettify_ranges(ranges):
     return ranges
 
 def get_max_nulls(task_mask):
+    if not 'x' in task_mask:
+        return
     import templates
     nulls = 0
     for i in range(1, 10):
@@ -95,15 +98,19 @@ def get_max_nulls(task_mask):
     return nulls
 
 
-def get_tasks(task_mask, ranges, solution, amount, name_of_file, iterations=10000000):
-    if solution is None:
-        import templates
-        nulls = get_max_nulls(task_mask)
-        solution = templates.get_solution(task_mask, nulls=nulls)
+def get_tasks(task_mask, ranges, solution, amount, name_of_file, iterations=1000000):
     errors = 0
     ranges = prettify_ranges(ranges)
     tasks = []
     params = get_params(task_mask)
+    if not params:
+        from utils import replace_numbers_by_variables
+        task_mask = replace_numbers_by_variables(task_mask)
+        params = get_params(task_mask)
+    if solution is None:
+        import templates
+        nulls = get_max_nulls(task_mask)
+        solution = templates.get_solution(task_mask, nulls=nulls)
     task_mask = latex_to_tex(task_mask)
     default_range = list(set(range(-10, 10)) - {0, 1, -1})
     while len(tasks) < amount:
@@ -155,6 +162,7 @@ def generate_test(
 
 
 if __name__ == '__main__':
+    print('Enter path to modules')
     sys.path.insert(0, config['modules_path'])  # чтобы импортировать модуль из этой папки
     module_names = get_module_names(config['modules_path'])
     for module_name in module_names:

@@ -1,4 +1,6 @@
 import math
+from latex import latex_to_python
+from GENERATOR import get_params
 def get_integer_roots(func, RANGE=range(-10, 10), nulls=0):
     roots = []
     for x in RANGE:
@@ -100,17 +102,22 @@ def get_answer_of_inequality(func, RANGE=range(-10, 10), nulls=0):
         return answer[:-1]
 
 def latex_to_function(latex):
-    from latex import latex_to_python
-    from GENERATOR import get_params
     params = get_params(latex)
     python = latex_to_python(latex)
     foo = eval('lambda ' + ','.join(params) + ':' + 'lambda x:' + python)
     return foo
 
 def get_solution(latex, **rest):
-    from latex import latex_to_python
+    from GENERATOR import get_params
     python = latex_to_python(latex)
-    if '>=' in python or '<=' in python or '>' in python or '<' in python:
+    params = get_params(latex)
+    if 'x' not in python:
+        print(params)
+        return eval(f'lambda {",".join(params)}: '
+                    f'int((answer:={python}))==round(answer, 6)'
+                    f' and -100 < answer < 100  and not -1e-05 < answer < 1e-05 and answer')
+
+    elif '>=' in python or '<=' in python or '>' in python or '<' in python:
         f = get_answer_of_inequality
     else:
         f = get_integer_roots
