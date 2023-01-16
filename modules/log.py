@@ -4,7 +4,7 @@ from math import log
 # from latex import latex_to_python
 
 task = r'''
-Найдите значение выражения $\frac{\log_{[a]} \log_{[b]}[c]^{[d]}}{\log^{[e]}_{[f]}[g]^{[h]}}$
+Найдите значение выражения $\frac{\log_{[a]}{ \log_{[b]}{[c]^{[d]}}}}{\log^{[e]}_{[f]}{[g]^{[h]}}}$
 '''
 
 ranges = dict(
