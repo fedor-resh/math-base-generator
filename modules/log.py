@@ -7,25 +7,14 @@ from latex import latex_to_python, python_to_latex, render_latex
 task = r'''
 Найдите значение выражения $\frac{\log_{[a]}{ \log_{[b]}{[c]^{[d]}}}}{\log^{[e]}_{[f]}{[g]^{[h]}}}$
 '''
+task = r'''
+Найдите значение выражения $\frac{1}{[a]}\left(\log_{2}{([c]x-[d])^[e]}\right)^[f]=\frac{\log_{10}{([h]-[i]x)}}{\log_{10}{[k]}}*[l]^{[m]*\log_{2}{\sqrt{[o]}}}$
+'''
 
-ranges = dict(
-    a=range(-16, 17),
-    b=range(-16, 17),
-    c=range(2, 17),
-    d=range(-16, 17),
-    e=range(-16, 17),
-    f=range(-16, 17),
-    g=range(2, 17),
-    h=range(-16, 17),
-)
-
-def solution(a,b,c,d,e,f,g,h):
-    answer = eval(latex_to_python(task))
-    if int(answer) == round(answer, 6) and -100 < answer < 100:
-        return int(answer)
+ranges = dict()
 
 
 if __name__ == '__main__':
     from GENERATOR import generate_test
 
-    generate_test(task, ranges, solution)
+    generate_test(task, ranges)
