@@ -19,21 +19,25 @@ def latex_to_tex(text):
     return text
 
 
-in_brackets = re.compile(r'\((=?[^{}]*(\([^{}]*\))*[^{}]*)*\)')
+
 
 brackets = r'\{([^{}]*(?:(?:\{[^{}]*\})*[^{}]*)*[^{}]*)\}'
+brackets_in_brackets = r'\{([^{}]*(?:(?:\{[^{}]*(?:(?:\{[^{}]*\})*[^{}]*)*[^{}]*\})*[^{}]*)*[^{}]*)\}'
 
 def latex_to_python(latex):
     """:return: python string"""
     if '$' in latex:
         latex = re.match(r'.*\$(.+)\$.*', latex).group(1)
-    while '\log' in latex:
-        latex = re.sub(r'\\log_'+brackets*2, r'__import__("math").log(\2, \1)', latex)
-        latex = re.sub(r'\\log\^'+brackets+'_'+brackets*2, r'__import__("math").log(\3, \2)**\1', latex)
+
+    prev = ''
+    while latex != prev:
+        prev = latex
+        latex = re.sub(r'\\log_'+brackets_in_brackets*2, r'__import__("math").log(\2, \1)', latex)
+        latex = re.sub(r'\\log\^'+brackets_in_brackets+'_'+brackets_in_brackets*2, r'__import__("math").log(\3, \2)**\1', latex)
+        latex = re.sub(r'\\frac'+brackets_in_brackets*2, r'(\1)/(\2)', latex)
 
     latex = re.sub(r'\^'+brackets, r'**(\1)', latex)
     latex = re.sub(r'\^(\d+)', r'**\1', latex)
-    latex = re.sub(r'\\frac'+brackets*2, r'(\1)/(\2)', latex)
     latex = re.sub(r'\\sqrt'+brackets, r'(\1)**0.5', latex)
     latex = re.sub(r'\[([a-z])\]([a-z])', r'[\1]*\2', latex)
     latex = latex \

@@ -12,14 +12,10 @@ task = r'Найдите значение выражения $[a]^{\sqrt{[b]}+[c]
 #     if int(answer) == round(answer, 6) and -100 < answer < 100:
 #         return int(answer)
 
-task = r'Найдите корни уравнения $\log_8(x+7)=\log_8(2x-15)$'
+task = r'Найди значение выражения $\log_{2}{(\frac{[a]^{[b]}}{[c]^{[d]}}+\frac{1}{\frac{[e]^2}{[f]^2}})}$'
 
+ranges = {
+}
 if __name__ == '__main__':
     from GENERATOR import generate_test
-    from utils import replace_numbers_by_variables
-
-    task = replace_numbers_by_variables(task)
-    import math
-
-    generate_test(task, {},
-                  get_integer_roots(lambda x: math.log(2 * x - 15, 8) == math.log(x + 7, 8), RANGE=range(-10, 10)))
+    generate_test(task, ranges)

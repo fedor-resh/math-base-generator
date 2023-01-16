@@ -104,23 +104,27 @@ def get_answer_of_inequality(func, RANGE=range(-10, 10), nulls=0):
 def latex_to_function(latex):
     params = get_params(latex)
     python = latex_to_python(latex)
+    print('lambda ' + ','.join(params) + ':' + 'lambda x:' + python)
     foo = eval('lambda ' + ','.join(params) + ':' + 'lambda x:' + python)
     return foo
 
 def get_solution(latex, **rest):
     from GENERATOR import get_params
     python = latex_to_python(latex)
+    print(python)
+
     params = get_params(latex)
     if 'x' not in python:
         print(params)
         return eval(f'lambda {",".join(params)}: '
-                    f'int((answer:={python}))==round(answer, 6)'
-                    f' and -100 < answer < 100  and not -1e-05 < answer < 1e-05 and answer')
+                    f'int((answer:={python}))==round(answer, 16)'
+                    f' and -100 < answer < 100  and not -1e-05 < answer < 1e-05 and int(answer)')
 
     elif '>=' in python or '<=' in python or '>' in python or '<' in python:
         f = get_answer_of_inequality
     else:
         f = get_integer_roots
+
     foo = latex_to_function(latex)
 
     return lambda **kwargs: f(foo(**kwargs), **rest)

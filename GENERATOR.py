@@ -69,7 +69,10 @@ def get_params(task):
 
 def prettify_task(task):
     task = task.replace('+-', '-')
-    return re.sub(r'1([a-zA-Z])', r'\1', task)
+    task = re.sub(r'1([a-zA-Z])', r'\1', task)
+    task = re.sub(r'(-\d+)\^\\\{(\d*[02468])\\\}', r'(\1)^\{\2\}', task)
+    task = re.sub(r'(-\d+)\^(\d*[02468])', r'(\1)^\{\2\}', task)
+    return task
 
 
 def prettify_ranges(ranges):
@@ -99,6 +102,7 @@ def get_max_nulls(task_mask):
 
 
 def get_tasks(task_mask, ranges, solution, amount, name_of_file, iterations=1000000):
+    id = str(__import__('time').time())[-5:]
     errors = 0
     ranges = prettify_ranges(ranges)
     tasks = []
@@ -132,9 +136,10 @@ def get_tasks(task_mask, ranges, solution, amount, name_of_file, iterations=1000
                 print('continue generate')
             errors += 1
             continue
-        if not answer: continue
+        if not answer:
+            continue
 
-        task = f':: file: {name_of_file} {len(tasks)}\n:: {task_mask}'
+        task = f':: id: {id} file: {name_of_file} {len(tasks)}\n:: {task_mask}'
 
         for key in variables:
             task = task.replace(f'[{key}]', str(variables[key]))
