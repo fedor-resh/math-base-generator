@@ -112,9 +112,8 @@ def get_solution(latex, **rest):
     python = latex_to_python(latex)
     params = get_params(latex)
     if 'x' not in python:
-        print(params)
         return eval(f'lambda {",".join(params)}: '
-                    f'int((answer:={python}))==round(answer, 15)'
+                    f'int((answer:={python}))==answer'
                     f' and -100 < answer < 100  and not -1e-05 < answer < 1e-05 and answer')
 
     elif '>=' in python or '<=' in python or '>' in python or '<' in python:
