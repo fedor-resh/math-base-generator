@@ -111,14 +111,12 @@ def latex_to_function(latex):
 def get_solution(latex, **rest):
     from GENERATOR import get_params
     python = latex_to_python(latex)
-    print(python)
-
     params = get_params(latex)
     if 'x' not in python:
         print(params)
         return eval(f'lambda {",".join(params)}: '
-                    f'int((answer:={python}))==round(answer, 16)'
-                    f' and -100 < answer < 100  and not -1e-05 < answer < 1e-05 and int(answer)')
+                    f'int((answer:={python}))==answer'
+                    f' and -100 < answer < 100  and not -1e-05 < answer < 1e-05 and answer')
 
     elif '>=' in python or '<=' in python or '>' in python or '<' in python:
         f = get_answer_of_inequality
