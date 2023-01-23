@@ -116,7 +116,7 @@ def get_tasks(task_mask, ranges, solution, amount, name_of_file, iterations=1000
         nulls = get_max_nulls(task_mask)
         solution = templates.get_solution(task_mask, nulls=nulls)
     task_mask = latex_to_tex(task_mask)
-    default_range = list(set(range(-10, 10)) - {0, 1, -1})
+    default_range = ranges.get('default', list(set(range(-10, 10)) - {0, 1, -1}))
     while len(tasks) < amount:
         if not tasks:
             iterations -= 1
