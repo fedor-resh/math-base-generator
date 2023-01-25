@@ -1,3 +1,4 @@
+import inspect
 import logging
 import re
 import traceback
@@ -35,9 +36,8 @@ def write_to_file(text, filename, path='.', add=False):
     full_path = f'{path}/{config["generated_tasks_path"]}/{filename}.txt'
     print(f'Wrote to: {full_path}')
     output = open(full_path, 'a' if add else 'w', encoding='utf-8')
-    output.write(text+'\n')
+    output.write(text + '\n')
     output.close()
-
 
 
 def get_test_arguments(path):
@@ -69,7 +69,7 @@ def get_params(task):
 
 def prettify_task(task):
     task = task.replace('+-', '-')
-    task = re.sub(r'1([a-zA-Z])', r'\1', task)
+    task = re.sub(r'([^123456789])1([a-zA-Z])', r'\1\2', task)
     task = re.sub(r'(-\d+)\^\\\{(\d*[02468])\\\}', r'(\1)^\{\2\}', task)
     task = re.sub(r'(-\d+)\^(\d*[02468])', r'(\1)^\{\2\}', task)
     return task
@@ -77,9 +77,11 @@ def prettify_task(task):
 
 def prettify_ranges(ranges):
     for key in ranges:
-        ranges[key] = list(ranges[key])
-        ranges[key] = [i for i in ranges[key] if i != 0]
+        if not callable(ranges[key]):
+            ranges[key] = list(ranges[key])
+            ranges[key] = [i for i in ranges[key] if i != 0]
     return ranges
+
 
 def get_max_nulls(task_mask):
     if not 'x' in task_mask:
@@ -91,7 +93,7 @@ def get_max_nulls(task_mask):
             get_tasks(
                 task_mask,
                 {}, templates.get_solution(task_mask, nulls=i),
-                1,'find_nulls',
+                1, 'find_nulls',
                 iterations=20000
             )
             nulls = i
@@ -99,6 +101,30 @@ def get_max_nulls(task_mask):
             break
     print('found nulls:', nulls)
     return nulls
+
+
+def get_variables(params, ranges):
+    default_range = ranges.get('default', list(set(range(-10, 10)) - {0, 1, -1}))
+
+    def filter_dict(dict_to_filter, thing_with_kwargs):
+        sig = inspect.signature(thing_with_kwargs)
+        filter_keys = [param.name for param in sig.parameters.values() if param.kind == param.POSITIONAL_OR_KEYWORD]
+        filtered_dict = {filter_key: dict_to_filter[filter_key] for filter_key in filter_keys}
+        return filtered_dict
+
+    vars_from_ranges = {
+        key: ranges[key][randint(0, len(ranges[key]) - 1)]
+        if key in ranges else default_range[randint(0, len(default_range) - 1)]
+        for key in {*params, *ranges.keys()} if key not in ranges or not callable(ranges[key])
+    }
+    # print(vars_from_ranges)
+
+    variables = {
+        key: ranges[key](**filter_dict(vars_from_ranges, ranges[key]))
+        if key in ranges and callable(ranges[key]) else vars_from_ranges[key]
+        for key in params
+    }
+    return {key: value for key, value in variables.items() if key in params}
 
 
 def get_tasks(task_mask, ranges, solution, amount, name_of_file, iterations=1000000):
@@ -113,20 +139,15 @@ def get_tasks(task_mask, ranges, solution, amount, name_of_file, iterations=1000
         params = get_params(task_mask)
     if solution is None:
         import templates
-        nulls = get_max_nulls(task_mask)
+        nulls = get_max_nulls(task_mask) if 'x' in task_mask else 0
         solution = templates.get_solution(task_mask, nulls=nulls)
     task_mask = latex_to_tex(task_mask)
-    default_range = list(set(range(-10, 10)) - {0, 1, -1})
     while len(tasks) < amount:
         if not tasks:
             iterations -= 1
             if iterations == 0:
                 raise Exception('iterations limit reached')
-        variables = {
-            key: ranges[key][randint(0, len(ranges[key]) - 1)]
-            if key in ranges else default_range[randint(0, len(default_range) - 1)]
-            for key in params
-        }
+        variables = get_variables(params, ranges)
         try:
             answer = solution(**variables)
         except Exception as e:
@@ -138,13 +159,14 @@ def get_tasks(task_mask, ranges, solution, amount, name_of_file, iterations=1000
             continue
         if not answer:
             continue
-
-        task = f':: id: {id} file: {name_of_file} {len(tasks)}\n:: {task_mask}'
-
+        task = task_mask
         for key in variables:
             task = task.replace(f'[{key}]', str(variables[key]))
-        task += '\n{=' + prettify_answer(answer) + '}\n'
         task = prettify_task(task)
+        if len(tasks) < 3:
+            render_latex(task)
+        task = f':: id: {id} file: {name_of_file} {len(tasks)}\n:: {task}'
+        task += '\n{=' + prettify_answer(answer) + '}\n'
         tasks.append(task)
         print(task)
     return tasks
@@ -156,7 +178,7 @@ def generate_test(
         solution=None,
         amount: int = config['amount_of_tasks'],
         create_file: bool = config['create_file'],
-        add = False,
+        add=False,
 ):
     render_latex(task_mask)
     name_of_file = __main__.__file__.replace('/', '\\').split('\\')[-1].split('.')[0]

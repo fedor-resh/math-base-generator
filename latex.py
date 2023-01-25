@@ -12,6 +12,7 @@ def latex_to_tex(text):
             .replace(r'\cdot', r'\\cdot') \
             .replace('{', r'\{') \
             .replace('}', r'\}')
+        parts[i] = parts[i].replace(' ', '')
 
         parts[i] = r'\(' + parts[i] + r'\)'
     text = ''.join(parts)
@@ -88,13 +89,15 @@ def python_to_latex(python):
 
 def render_latex(tex):
     import re
-    print('render_latex')
-    print(tex)
     try:
-        tex = re.match(r'.*\$(.+)\$.*', tex).group(1)
+        if '$' in tex:
+            tex = re.match(r'.*\$(.+)\$.*', tex).group(1)
+        else:
+            tex = re.match(r'.*\\\((.+)\\\).*', tex).group(1)
     except:
         pass
-    print(tex)
+    tex = tex.replace('\\', '')
+
     try:
         import matplotlib.pyplot as plt
         tex = '$' + tex + '$'
@@ -130,4 +133,4 @@ def solve_latex_expression(latex):
 
 
 if __name__ == '__main__':
-    print(latex_to_python(r'\log_{2}{8}'))
+    render_latex(r'$\log_\{6\}\{(2x+47)\} + \log_\{6\}\{(-4x+47)\} = \log_\{36\}\{(77x+22)^\{2\}\}$')
