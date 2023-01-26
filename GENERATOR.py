@@ -92,34 +92,37 @@ def get_max_nulls(task_mask):
     nulls = 0
     for i in range(1, 10):
         try:
-            get_tasks(task_mask,{}, templates.get_solution(task_mask, nulls=i),1, 'find_nulls',iterations=20000)
+            get_tasks(task_mask, {}, templates.get_solution(task_mask, nulls=i), 1, 'find_nulls', iterations=20000)
             nulls = i
         except:
             break
     print('found nulls:', nulls)
     return nulls
 
-
+def is_iterable(obj):
+    try:
+        iter(obj)
+        return True
+    except:
+        return False
 def get_variables(params, ranges):
     default_range = ranges.get('default', list(set(range(-10, 10)) - {0, 1, -1}))
-    variables = ranges
     prev_variables = None
     full_list_of_params = {*params, *ranges.keys()}
+    variables = {
+        param: (choice(ranges[param]) if is_iterable(ranges[param]) else ranges[param]) if param in ranges
+        else choice(default_range)
+        for param in full_list_of_params
+    }
     while prev_variables != variables:
         prev_variables = variables.copy()
         for param in full_list_of_params:
-            if param in variables:
-                if type(variables[param]) is int or type(variables[param]) is float:
-                    pass
-                elif callable(variables[param]):
-                    cur_params = get_params_from_function(variables[param])
-                    if set(get_params_from_function(variables[param])) <= set(variables):
-                        variables[param] = variables[param](**filter_dict(variables, variables[param]))
-                else:
-                    variables[param] = choice(variables[param])
-            else:
-                variables[param] = choice(default_range)
-
+            if callable(variables[param]):
+                props = filter_dict(variables, variables[param])
+                try: variables[param] = variables[param](**props)
+                except: pass
+            if is_iterable(variables[param]):
+                variables[param] = choice(variables[param]) if variables[param] else choice(default_range)
     return {key: value for key, value in variables.items() if key in params}
 
 

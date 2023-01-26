@@ -96,8 +96,11 @@ def render_latex(tex):
             tex = re.match(r'.*\\\((.+)\\\).*', tex).group(1)
     except:
         pass
-    tex = tex.replace('\\', '')
-
+    tex = tex\
+        .replace(r'\(', '(')\
+        .replace(r'\)', ')')\
+        .replace(r'\{', '{')\
+        .replace(r'\}', '}')
     try:
         import matplotlib.pyplot as plt
         tex = '$' + tex + '$'

@@ -37,9 +37,9 @@ from latex import latex_to_python, python_to_latex, render_latex
 task = r'Решите уравнение $\log_{[e]}{(x^2+[b]x+[c])}=[d]$ запишите корни через пробел'
 
 ranges = dict(
-    d=lambda e: range(2, 10),
     x1=range(-10, 10),
     x2=range(-10, 10),
+    d=lambda b: range(1, 3),
     b=lambda x1, x2: x1 + x2,
     c=lambda x1, x2, e, d: x1 * x2 + e**d,
 )
@@ -47,4 +47,4 @@ ranges = dict(
 if __name__ == '__main__':
     from GENERATOR import generate_test
     from templates import get_solution
-    generate_test(task, ranges, get_solution(task, nulls=2), amount=20)
+    generate_test(task, ranges)

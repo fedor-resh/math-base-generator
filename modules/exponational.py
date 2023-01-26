@@ -1,6 +1,6 @@
 from templates import get_integer_roots, latex_to_function, get_answer_of_inequality, get_solution
 
-task = r'Найдите значение выражения $[a]^{\sqrt{[b]}+[c]} \cdot [g]^{[d]+\sqrt{[e]}}$'
+# task = r'Найдите значение выражения $[a]^{\sqrt{[b]}+[c]} \cdot [g]^{[d]+\sqrt{[e]}}$'
 
 # ranges = {
 #     'a': range(2, 10),
