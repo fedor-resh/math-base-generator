@@ -102,20 +102,21 @@ def get_max_nulls(task_mask):
 
 def get_variables(params, ranges):
     default_range = ranges.get('default', list(set(range(-10, 10)) - {0, 1, -1}))
-    variables = {}
+    variables = ranges
     prev_variables = None
     full_list_of_params = {*params, *ranges.keys()}
     while prev_variables != variables:
         prev_variables = variables.copy()
         for param in full_list_of_params:
             if param in variables:
-                continue
-            if param in ranges:
-                if callable(ranges[param]):
-                    if set(get_params_from_function(ranges[param])) <= set(variables):
-                        variables[param] = ranges[param](**filter_dict(variables, ranges[param]))
+                if type(variables[param]) is int or type(variables[param]) is float:
+                    pass
+                elif callable(variables[param]):
+                    cur_params = get_params_from_function(variables[param])
+                    if set(get_params_from_function(variables[param])) <= set(variables):
+                        variables[param] = variables[param](**filter_dict(variables, variables[param]))
                 else:
-                    variables[param] = choice(ranges[param])
+                    variables[param] = choice(variables[param])
             else:
                 variables[param] = choice(default_range)
 
