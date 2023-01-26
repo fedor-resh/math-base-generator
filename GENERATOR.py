@@ -2,9 +2,11 @@ import inspect
 import logging
 import re
 import traceback
-from random import randint
+from random import randint, choice
 from latex import latex_to_tex, render_latex
 from config import config
+from utils import filter_dict, get_params_from_function
+
 import sys
 import __main__
 
@@ -53,7 +55,7 @@ def prettify_answer(answer):
 
     if (type(answer) is list or type(answer) is tuple) and int(answer[0]) == answer[0]:
         from itertools import permutations
-        perm = list(permutations(answer))
+        perm = list(permutations(set(answer)))
         return f'{"=".join([" ".join([str(int(item)) for item in answer]) + " " for answer in perm])}'
 
     return f'{answer}'
@@ -90,12 +92,7 @@ def get_max_nulls(task_mask):
     nulls = 0
     for i in range(1, 10):
         try:
-            get_tasks(
-                task_mask,
-                {}, templates.get_solution(task_mask, nulls=i),
-                1, 'find_nulls',
-                iterations=20000
-            )
+            get_tasks(task_mask,{}, templates.get_solution(task_mask, nulls=i),1, 'find_nulls',iterations=20000)
             nulls = i
         except:
             break
@@ -105,25 +102,23 @@ def get_max_nulls(task_mask):
 
 def get_variables(params, ranges):
     default_range = ranges.get('default', list(set(range(-10, 10)) - {0, 1, -1}))
+    variables = {}
+    prev_variables = None
+    full_list_of_params = {*params, *ranges.keys()}
+    while prev_variables != variables:
+        prev_variables = variables.copy()
+        for param in full_list_of_params:
+            if param in variables:
+                continue
+            if param in ranges:
+                if callable(ranges[param]):
+                    if set(get_params_from_function(ranges[param])) <= set(variables):
+                        variables[param] = ranges[param](**filter_dict(variables, ranges[param]))
+                else:
+                    variables[param] = choice(ranges[param])
+            else:
+                variables[param] = choice(default_range)
 
-    def filter_dict(dict_to_filter, thing_with_kwargs):
-        sig = inspect.signature(thing_with_kwargs)
-        filter_keys = [param.name for param in sig.parameters.values() if param.kind == param.POSITIONAL_OR_KEYWORD]
-        filtered_dict = {filter_key: dict_to_filter[filter_key] for filter_key in filter_keys}
-        return filtered_dict
-
-    vars_from_ranges = {
-        key: ranges[key][randint(0, len(ranges[key]) - 1)]
-        if key in ranges else default_range[randint(0, len(default_range) - 1)]
-        for key in {*params, *ranges.keys()} if key not in ranges or not callable(ranges[key])
-    }
-    # print(vars_from_ranges)
-
-    variables = {
-        key: ranges[key](**filter_dict(vars_from_ranges, ranges[key]))
-        if key in ranges and callable(ranges[key]) else vars_from_ranges[key]
-        for key in params
-    }
     return {key: value for key, value in variables.items() if key in params}
 
 

@@ -25,18 +25,26 @@ from latex import latex_to_python, python_to_latex, render_latex
 #     m=range(2, 10),
 #     o=range(2, 10),
 # )
-task = r'Решите уравнение $\log_{[a]}{([c]x+[d])} + \log_{[a]}{([e]x+[d])} = \log_{[z]}{([g]x+[h])^{2}}$'
+# task = r'Решите уравнение $\log_{[a]}{([c]x+[d])} + \log_{[a]}{([e]x+[d])} = \log_{[z]}{([g]x+[h])^{2}}$'
+# from random import choice
+# ranges = dict(
+#     default=range(-100, 100),
+#     a=range(2, 10),
+#     c=range(-10, 10),
+#     e=range(-10, 10),
+#     z=lambda a: a**2,
+# )
+task = r'Решите уравнение $\log_{[e]}{(x^2+[b]x+[c])}=[d]$ запишите корни через пробел'
 
 ranges = dict(
-    default=range(-100, 100),
-    a=range(2, 10),
-    c=range(-10, 10),
-    e=range(-10, 10),
-    z=lambda a: a**2,
+    d=range(-1, 3),
+    x1=range(-10, 10),
+    x2=range(-10, 10),
+    b=lambda x1, x2: x1 + x2,
+    c=lambda x1, x2, e, d: x1 * x2 + e**d,
 )
+
 if __name__ == '__main__':
     from GENERATOR import generate_test
     from templates import get_solution
-
-    generate_test(task, ranges, get_solution(task, nulls=1))
-
+    generate_test(task, ranges, get_solution(task, nulls=2), amount=20)
