@@ -122,7 +122,7 @@ def get_variables(params, ranges):
                 props = filter_dict(variables, variables[param])
                 try: variables[param] = variables[param](**props)
                 except: pass
-            if variables[param] is list or variables[param] is range:
+            if type(variables[param]) is list or type(variables[param]) is range:
                 variables[param] = choice(variables[param]) if variables[param] else choice(default_range)
     return variables
 

@@ -1,7 +1,7 @@
 from templates import generate_inequality_test
 
 latex1 = r'$\frac{[a]x^{2}+[b]x+[c]}{[d]x^{2}+[e]x+[f]}>0$'
-latex1 = r'$\sqrt{x^{2}+[b]x+[c]}>=[d]x^{2}+[e]x+[f]$'
+latex1 = r'$\sqrt{x^{2}+[b]x+[c]}>= [d]x^{2}+[e]x+[f]$'
 ranges = dict(
     x1=[i**2 for i in range(-3, 4)],
     x2=[i**2 for i in range(-3, 4)],

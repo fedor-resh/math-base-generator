@@ -14,7 +14,6 @@ def latex_to_tex(text):
             .replace('}', r'\}')\
             .replace('>=', r'\\geq ')\
             .replace('<=', r'\\leq ')
-        parts[i] = parts[i].replace(' ', '')
 
         parts[i] = r'\(' + parts[i] + r'\)'
     text = ''.join(parts)
