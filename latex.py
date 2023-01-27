@@ -43,7 +43,7 @@ def latex_to_python(latex):
     latex = re.sub(r'\^(\d+)', r'**\1', latex)
     latex = re.sub(r'\\sqrt'+brackets, r'(\1)**0.5', latex)
     latex = re.sub(r'\[([a-z])\]([a-z])', r'[\1]*\2', latex)
-    latex = re.sub(r'[^><]=', r'==', latex)
+    latex = re.sub(r'([^><])=', r'\1==', latex)
     latex = latex \
         .replace('\\cdot', '*') \
         .replace('\\left', '') \

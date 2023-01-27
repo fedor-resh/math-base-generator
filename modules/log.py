@@ -46,5 +46,4 @@ ranges = dict(
 
 if __name__ == '__main__':
     from GENERATOR import generate_test
-    from templates import get_solution
     generate_test(task, ranges)

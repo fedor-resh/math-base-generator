@@ -88,6 +88,7 @@ def get_solution(latex, **rest):
     from GENERATOR import get_params
     python = latex_to_python(latex)
     params = get_params(latex)
+    print(python)
     if 'x' not in python:
         print(params)
         return eval(f'lambda {",".join(params)}: '

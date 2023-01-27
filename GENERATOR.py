@@ -110,7 +110,8 @@ def get_variables(params, ranges):
     prev_variables = None
     full_list_of_params = {*params, *ranges.keys()}
     variables = {
-        param: (choice(ranges[param]) if is_iterable(ranges[param]) else ranges[param]) if param in ranges
+        param: (choice(ranges[param]) if is_iterable(ranges[param]) else ranges[param])
+        if param in ranges
         else choice(default_range)
         for param in full_list_of_params
     }
@@ -121,9 +122,9 @@ def get_variables(params, ranges):
                 props = filter_dict(variables, variables[param])
                 try: variables[param] = variables[param](**props)
                 except: pass
-            if is_iterable(variables[param]):
+            if variables[param] is list or variables[param] is range:
                 variables[param] = choice(variables[param]) if variables[param] else choice(default_range)
-    return {key: value for key, value in variables.items() if key in params}
+    return variables
 
 
 def get_tasks(task_mask, ranges, solution, amount, name_of_file, iterations=1000000):
@@ -140,6 +141,7 @@ def get_tasks(task_mask, ranges, solution, amount, name_of_file, iterations=1000
         import templates
         nulls = get_max_nulls(task_mask) if 'x' in task_mask else 0
         solution = templates.get_solution(task_mask, nulls=nulls)
+    params_of_solution = get_params_from_function(solution) or params
     task_mask = latex_to_tex(task_mask)
     while len(tasks) < amount:
         if not tasks:
@@ -147,6 +149,7 @@ def get_tasks(task_mask, ranges, solution, amount, name_of_file, iterations=1000
             if iterations == 0:
                 raise Exception('iterations limit reached')
         variables = get_variables(params, ranges)
+        variables = {key: variables[key] for key in params_of_solution}
         try:
             answer = solution(**variables)
         except Exception as e:
