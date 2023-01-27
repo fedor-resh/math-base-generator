@@ -21,7 +21,7 @@ def solution(a, b, c, d, e, f, g, h):
 if __name__ == '__main__':
     import sys
 
-    sys.path.insert(1, '../')
+    sys.path.insert(1, '../../')
     from GENERATOR import generate_test
 
     generate_test(task, ranges, solution)

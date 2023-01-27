@@ -163,7 +163,7 @@ def get_tasks(task_mask, ranges, solution, amount, name_of_file, iterations=1000
             task = task.replace(f'[{key}]', str(variables[key]))
         task = prettify_task(task)
         if len(tasks) < 3:
-            render_latex(task)
+            render_latex(task, prettify_answer(answer))
         task = f':: id: {id} file: {name_of_file} {len(tasks)}\n:: {task}'
         task += '\n{=' + prettify_answer(answer) + '}\n'
         tasks.append(task)

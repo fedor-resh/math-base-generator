@@ -11,7 +11,9 @@ def latex_to_tex(text):
             .replace(r'\right', r'\\right') \
             .replace(r'\cdot', r'\\cdot') \
             .replace('{', r'\{') \
-            .replace('}', r'\}')
+            .replace('}', r'\}')\
+            .replace('>=', r'\\geq ')\
+            .replace('<=', r'\\leq ')
         parts[i] = parts[i].replace(' ', '')
 
         parts[i] = r'\(' + parts[i] + r'\)'
@@ -41,8 +43,8 @@ def latex_to_python(latex):
     latex = re.sub(r'\^(\d+)', r'**\1', latex)
     latex = re.sub(r'\\sqrt'+brackets, r'(\1)**0.5', latex)
     latex = re.sub(r'\[([a-z])\]([a-z])', r'[\1]*\2', latex)
+    latex = re.sub(r'[^><]=', r'==', latex)
     latex = latex \
-        .replace(r'=', '==') \
         .replace('\\cdot', '*') \
         .replace('\\left', '') \
         .replace('\\right', '') \
@@ -87,7 +89,7 @@ def python_to_latex(python):
     return latex
 
 
-def render_latex(tex):
+def render_latex(tex, description=''):
     import re
     try:
         if '$' in tex:
@@ -100,7 +102,8 @@ def render_latex(tex):
         .replace(r'\(', '(')\
         .replace(r'\)', ')')\
         .replace(r'\{', '{')\
-        .replace(r'\}', '}')
+        .replace(r'\}', '}')\
+        .replace(r'\\', '\\')
     try:
         import matplotlib.pyplot as plt
         tex = '$' + tex + '$'
@@ -110,6 +113,7 @@ def render_latex(tex):
         ax.set_axis_off()
 
         # Отрисовка формулы
+        ax.text(0.01, 0.1, description, fontsize=10)
         t = ax.text(0.5, 0.5, tex,
                     horizontalalignment='center',
                     verticalalignment='center',

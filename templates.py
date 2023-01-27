@@ -1,6 +1,8 @@
 import math
 from latex import latex_to_python
-from GENERATOR import get_params
+from GENERATOR import get_params, generate_test
+
+
 def get_integer_roots(func, RANGE=range(-10, 10), nulls=0):
     roots = []
     for x in RANGE:
@@ -9,7 +11,6 @@ def get_integer_roots(func, RANGE=range(-10, 10), nulls=0):
             nulls -= 1
     if nulls <= 0:
         return roots
-
 
 
 def get_roots_of_polynomial(a=None, b=None, c=None, d=None):
@@ -58,12 +59,6 @@ def get_roots_of_polynomial(a=None, b=None, c=None, d=None):
 
 
 def get_answer_of_inequality(func, RANGE=range(-10, 10), nulls=0):
-    '''
-    :param func: inequality function
-    :param RANGE: range of enumeration
-    :return: string of solution for example '(1;2)u[3;+inf)'
-    '''
-    answer = ''
     prev = None
     for x in RANGE:
         try:
@@ -73,40 +68,21 @@ def get_answer_of_inequality(func, RANGE=range(-10, 10), nulls=0):
                 return
         except:
             analize = [func(x - 0.000001), False, func(x + 0.000001)]
-
-        if analize[1] and x == RANGE[-1]:
-            answer += '+inf)u'
-        if analize[1] and x == RANGE[0]:
-            answer += '(-inf,'
         if (not prev is None) and analize[0] != prev:
             return
         prev = analize[2]
         if all(analize) or not any(analize):
             continue
         nulls -= 1
-        if analize[1] == analize[2] == True:
-            answer += f'[{x};'
-        elif analize[0] == analize[1] == True:
-            answer += f'{x}]u'
-        elif analize[0] == analize[2] == True:
-            answer += f'{x})u({x};'
-        elif analize[0]:
-            answer += f'{x})u'
-        elif analize[2]:
-            answer += f'({x};'
-        elif analize[1]:
-            answer += f'{{{x}}}u'
-        else:
-            print('Error')
-    if nulls <= 0 and answer[-1] == 'u':
-        return answer[:-1]
-
+    if nulls <= 0 and not prev:
+        return True
 def latex_to_function(latex):
     params = get_params(latex)
     python = latex_to_python(latex)
     print('lambda ' + ','.join(params) + ':' + 'lambda x:' + python)
     foo = eval('lambda ' + ','.join(params) + ':' + 'lambda x:' + python)
     return foo
+
 
 def get_solution(latex, **rest):
     from GENERATOR import get_params
@@ -128,7 +104,39 @@ def get_solution(latex, **rest):
     return lambda **kwargs: f(foo(**kwargs), **rest)
 
 
+def generate_inequality_test(latex, ranges, nulls=0):
+    foo = latex_to_function(latex)
+    task = r'Найдите максимальное целое решение' + latex
+
+    def solution(**k):
+        roots = get_integer_roots(foo(**k), RANGE=range(-100, 100))
+        if get_answer_of_inequality(foo(**k), nulls=nulls) and max(roots) != 99:
+            return max(roots)
+
+    generate_test(task, ranges, solution, add=True)
+    task = r'Найдите количество целых решений ' + latex
+
+    def solution(**k):
+        roots = get_integer_roots(foo(**k), RANGE=range(-100, 100))
+        if get_answer_of_inequality(foo(**k), nulls=nulls) and roots[0] != -100 and roots[-1] != 99 and sum(roots) != 0:
+            return len(roots)
+
+    generate_test(task, ranges, solution, add=True)
+
+    task = r'Найдите сумму целых решений ' + latex
+
+    def solution(**k):
+        roots = get_integer_roots(foo(**k), RANGE=range(-100, 100))
+        if get_answer_of_inequality(foo(**k), nulls=nulls) and roots[0] != -100 and roots[-1] != 99 and sum(
+                roots) != 0 and sum(roots) < 100:
+            return sum(roots)
+
+    generate_test(task, ranges, solution, add=True)
+
+
 if __name__ == '__main__':
     def f(**kwargs):
         print(kwargs)
+
+
     f(a=1, b=2)

@@ -1,38 +1,34 @@
-from templates import get_integer_roots, latex_to_function, get_answer_of_inequality
-from GENERATOR import generate_test
+from templates import generate_inequality_test
 
-latex = r'$\sqrt{[a]x^{2}+[b]x+[c]} \cdot ([d]x^{2}+[e]x+[f]) > 0$'
-latex1 = r'$\sqrt{[a]x^{2}+[b]x+[c]}>[d]x^{2}+[e]x+[f]$'
 latex1 = r'$\frac{[a]x^{2}+[b]x+[c]}{[d]x^{2}+[e]x+[f]}>0$'
-foo = latex_to_function(latex)
-task = r'Найдите максимальное целое решение' + latex
+latex1 = r'$\sqrt{x^{2}+[b]x+[c]}>=[d]x^{2}+[e]x+[f]$'
+ranges = dict(
+    x1=[i**2 for i in range(-3, 4)],
+    x2=[i**2 for i in range(-3, 4)],
+    b=lambda x1, x2: x1 + x2,
+    c=lambda x1, x2: x1 * x2,
+    x3=range(-10, 10),
+    x4=range(-10, 10),
+    d=range(-5, 5),
+    e=lambda x3, x4, d: (x3 + x4) * d,
+    f=lambda x3, x4, d: x3 * x4 * d,
+)
+generate_inequality_test(latex1, ranges, nulls=2)
+
+# latex = r'$\sqrt{x^{2}+[b]x+[c]} \cdot ([d]x^{2}+[e]x+[f]) > 0$'
+#
+# ranges = dict(
+#     x1=[i**2 for i in range(-3, 4)],
+#     x2=[i**2 for i in range(-3, 4)],
+#     b=lambda x1, x2: x1 + x2,
+#     c=lambda x1, x2: x1 * x2,
+#     x3=range(-10, 10),
+#     x4=range(-10, 10),
+#     d=range(-5, 5),
+#     e=lambda x3, x4, d: (x3 + x4) * d,
+#     f=lambda x3, x4, d: x3 * x4 * d,
+# )
+# generate_inequality_test(latex, ranges, nulls=3)
 
 
-def solution(**k):
-    roots = get_integer_roots(foo(**k), RANGE=range(-100, 100))
-    if get_answer_of_inequality(foo(**k), nulls=2) and max(roots) != 99:
-        return max(roots)
 
-
-generate_test(task, {}, solution, add=True)
-task = r'Найдите количество целых решений ' + latex
-
-
-def solution(**k):
-    roots = get_integer_roots(foo(**k), RANGE=range(-100, 100))
-    if get_answer_of_inequality(foo(**k), nulls=2) and  roots[0] != -100 and roots[-1] != 99 and sum(roots) != 0:
-        return len(roots)
-
-
-generate_test(task, {}, solution, add=True)
-
-task = r'Найдите сумму целых решений ' + latex
-
-
-def solution(**k):
-    roots = get_integer_roots(foo(**k), RANGE=range(-100, 100))
-    if get_answer_of_inequality(foo(**k), nulls=2) and  roots[0] != -100 and roots[-1] != 99 and sum(roots) != 0 and sum(roots) < 100:
-        return sum(roots)
-
-
-generate_test(task, {}, solution, add=True)
