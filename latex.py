@@ -112,7 +112,7 @@ def render_latex(tex, description=''):
         ax.set_axis_off()
 
         # Отрисовка формулы
-        ax.text(0.01, 0.1, description, fontsize=10)
+        ax.text(0.01, 0.1, description, fontsize=4)
         t = ax.text(0.5, 0.5, tex,
                     horizontalalignment='center',
                     verticalalignment='center',

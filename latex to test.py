@@ -4,6 +4,7 @@ def write_to_file(text, add=False):
     output.write(text + '\n')
     output.close()
 def latex_to_tex(text):
+    text = text.replace('$$', '$')
     parts = text.split('$')
     for i in range(1, len(parts), 2):
         parts[i] = parts[i].replace('*', r'\cdot')
@@ -29,4 +30,3 @@ while x:=input('Enter latex: '):
     task += '\n{=' + anw + '}\n'
     write_to_file(latex_to_tex(task), add=True)
 print('done')
-

@@ -94,15 +94,11 @@ def get_solution(latex, **rest):
         return eval(f'lambda {",".join(params)}: '
                     f'int((answer:={python}))==answer'
                     f' and -100 < answer < 100  and not -1e-05 < answer < 1e-05 and answer')
-
-    elif '>=' in python or '<=' in python or '>' in python or '<' in python:
-        f = get_answer_of_inequality
-    else:
-        f = get_integer_roots
-
+    if any(s in python for s in ['<=', '<', '>=', '>']):
+        print('there is no automatic solution for inequalities')
+        return
     foo = latex_to_function(latex)
-
-    return lambda **kwargs: f(foo(**kwargs), **rest)
+    return lambda **kwargs: sum(get_integer_roots(foo(**kwargs), **rest))
 
 
 def generate_inequality_test(latex, ranges, nulls=0):
