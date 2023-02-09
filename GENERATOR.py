@@ -5,11 +5,39 @@ import traceback
 from random import randint, choice
 from latex import latex_to_tex, render_latex
 from config import config
-from utils import filter_dict, get_params_from_function
-
+from utils import filter_dict, get_params_from_function, get_params_from_task
 import sys
 import __main__
+from templates import latex_to_function, get_integer_roots, get_answer_of_inequality
 
+def generate_inequality_test(latex, ranges, nulls=0):
+    foo = latex_to_function(latex)
+    task = r'Найдите максимальное целое решение' + latex
+
+    def solution(**k):
+        roots = get_integer_roots(foo(**k), RANGE=range(-100, 100))
+        if get_answer_of_inequality(foo(**k), nulls=nulls) and max(roots) != 99:
+            return max(roots)
+
+    generate_test(task, ranges, solution, add=True)
+    task = r'Найдите количество целых решений ' + latex
+
+    def solution(**k):
+        roots = get_integer_roots(foo(**k), RANGE=range(-100, 100))
+        if get_answer_of_inequality(foo(**k), nulls=nulls) and roots[0] != -100 and roots[-1] != 99 and sum(roots) != 0:
+            return len(roots)
+
+    generate_test(task, ranges, solution, add=True)
+
+    task = r'Найдите сумму целых решений ' + latex
+
+    def solution(**k):
+        roots = get_integer_roots(foo(**k), RANGE=range(-100, 100))
+        if get_answer_of_inequality(foo(**k), nulls=nulls) and roots[0] != -100 and roots[-1] != 99 and sum(
+                roots) != 0 and sum(roots) < 100:
+            return sum(roots)
+
+    generate_test(task, ranges, solution, add=True)
 
 def get_py_filenames(path='./'):
     from os import walk
@@ -61,12 +89,7 @@ def prettify_answer(answer):
     return f'{answer}'
 
 
-def get_params(task):
-    import re
-    letters = re.findall(r'\[([a-zA-Z])\]', task)
-    return list(set(letters))
-    # import inspect
-    # return inspect.getfullargspec(func)[0]
+
 
 
 def prettify_task(task):
@@ -88,6 +111,12 @@ def prettify_ranges(ranges):
 def get_max_nulls(task_mask):
     if not 'x' in task_mask:
         return
+    if '<' in task_mask or '>' in task_mask:
+        task_mask = task_mask\
+            .replace('<=', '=')\
+            .replace('>=', '=')\
+            .replace('<', '=')\
+            .replace('>', '=')
     import templates
     nulls = 0
     for i in range(1, 10):
@@ -132,15 +161,21 @@ def get_tasks(task_mask, ranges, solution, amount, name_of_file, iterations=1000
     errors = 0
     ranges = prettify_ranges(ranges)
     tasks = []
-    params = get_params(task_mask)
+    params = get_params_from_task(task_mask)
     if not params:
         from utils import replace_numbers_by_variables
         task_mask = replace_numbers_by_variables(task_mask)
-        params = get_params(task_mask)
+        params = get_params_from_task(task_mask)
     if solution is None:
-        import templates
         nulls = get_max_nulls(task_mask) if 'x' in task_mask else 0
+        if '<' in task_mask or '>' in task_mask:
+            print('generate inequality test')
+            generate_inequality_test(task_mask, ranges, nulls)
+            return
+        import templates
         solution = templates.get_solution(task_mask, nulls=nulls)
+        if 'x' in task_mask:
+            task_mask = 'Введите сумму корней уравнения: ' + task_mask
     params_of_solution = get_params_from_function(solution) or params
     task_mask = latex_to_tex(task_mask)
     while len(tasks) < amount:
