@@ -11,7 +11,7 @@ ranges = dict(
     x4=range(-10, 10),
     d=range(-5, 5),
     e=lambda x3, x4, d: (x3 + x4) * d,
-    f=lambda x3, x4, d: x3 * x4 * d,
+    # f=lambda x3, x4, d: x3 * x4 * d,
 )
 generate_inequality_test(latex1, ranges, nulls=2)
 
