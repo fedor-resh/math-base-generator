@@ -9,7 +9,7 @@ def latex_to_tex(text):
             .replace(r'\sqrt', r'\\sqrt') \
             .replace(r'\left', r'\\left') \
             .replace(r'\right', r'\\right') \
-            .replace(r'\cdot', r'\\cdot') \
+            .replace(r'\cdot', r'\\cdot ') \
             .replace('{', r'\{') \
             .replace('}', r'\}')\
             .replace('>=', r'\\geq ')\
@@ -37,14 +37,13 @@ def latex_to_python(latex):
         latex = re.sub(r'\\log_'+brackets_in_brackets*2, r'__import__("math").log(\2, \1)', latex)
         latex = re.sub(r'\\log\^'+brackets_in_brackets+'_'+brackets_in_brackets*2, r'__import__("math").log(\3, \2)**\1', latex)
         latex = re.sub(r'\\frac'+brackets_in_brackets*2, r'(\1)/(\2)', latex)
-
-    latex = re.sub(r'\^'+brackets, r'**(\1)', latex)
+        latex = re.sub(r'\^'+brackets, r'**(\1)', latex)
     latex = re.sub(r'\^(\d+)', r'**\1', latex)
-    latex = re.sub(r'\\sqrt'+brackets, r'(\1)**0.5', latex)
+    latex = re.sub(r'\\sqrt'+brackets_in_brackets, r'(\1)**0.5', latex)
     latex = re.sub(r'\[([a-z])\]([a-z])', r'[\1]*\2', latex)
     latex = re.sub(r'([^><])=', r'\1==', latex)
     latex = latex \
-        .replace('\\cdot', '*') \
+        .replace('\\cdot ', '*') \
         .replace('\\left', '') \
         .replace('\\right', '') \
         .replace('\\geq', '>=') \
