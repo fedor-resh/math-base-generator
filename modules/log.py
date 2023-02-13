@@ -34,7 +34,7 @@ from latex import latex_to_python, python_to_latex, render_latex
 #     e=range(-10, 10),
 #     z=lambda a: a**2,
 # )
-task = r'Решите уравнение $\log_{[e]}{(x^2+[b]x+[c])}=[d]$ запишите корни через пробел'
+task = r'$\log_{[e]}{(x^2+[b]x+[c])}<[d]$'
 
 ranges = dict(
     x1=range(-10, 10),

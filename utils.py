@@ -21,3 +21,9 @@ def filter_dict(dict_to_filter, thing_with_kwargs):
 def get_params_from_function(func):
     return inspect.getfullargspec(func)[0]
 
+def get_params_from_task(task):
+    import re
+    letters = re.findall(r'\[([a-zA-Z])\]', task)
+    return list(set(letters))
+    # import inspect
+    # return inspect.getfullargspec(func)[0]

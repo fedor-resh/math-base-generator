@@ -1,8 +1,6 @@
 import math
 from latex import latex_to_python
-from GENERATOR import get_params, generate_test
-
-
+from utils import get_params_from_task
 def get_integer_roots(func, RANGE=range(-10, 10), nulls=0):
     roots = []
     for x in RANGE:
@@ -77,7 +75,7 @@ def get_answer_of_inequality(func, RANGE=range(-10, 10), nulls=0):
     if nulls <= 0 and not prev:
         return True
 def latex_to_function(latex):
-    params = get_params(latex)
+    params = get_params_from_task(latex)
     python = latex_to_python(latex)
     print('lambda ' + ','.join(params) + ':' + 'lambda x:' + python)
     foo = eval('lambda ' + ','.join(params) + ':' + 'lambda x:' + python)
@@ -85,50 +83,19 @@ def latex_to_function(latex):
 
 
 def get_solution(latex, **rest):
-    from GENERATOR import get_params
     python = latex_to_python(latex)
-    params = get_params(latex)
+    params = get_params_from_task(latex)
     print(python)
     if 'x' not in python:
         print(params)
         return eval(f'lambda {",".join(params)}: '
                     f'int((answer:={python}))==answer'
                     f' and -100 < answer < 100  and not -1e-05 < answer < 1e-05 and answer')
-    if any(s in python for s in ['<=', '<', '>=', '>']):
-        print('there is no automatic solution for inequalities')
-        return
     foo = latex_to_function(latex)
     return lambda **kwargs: sum(get_integer_roots(foo(**kwargs), **rest))
 
 
-def generate_inequality_test(latex, ranges, nulls=0):
-    foo = latex_to_function(latex)
-    task = r'Найдите максимальное целое решение' + latex
 
-    def solution(**k):
-        roots = get_integer_roots(foo(**k), RANGE=range(-100, 100))
-        if get_answer_of_inequality(foo(**k), nulls=nulls) and max(roots) != 99:
-            return max(roots)
-
-    generate_test(task, ranges, solution, add=True)
-    task = r'Найдите количество целых решений ' + latex
-
-    def solution(**k):
-        roots = get_integer_roots(foo(**k), RANGE=range(-100, 100))
-        if get_answer_of_inequality(foo(**k), nulls=nulls) and roots[0] != -100 and roots[-1] != 99 and sum(roots) != 0:
-            return len(roots)
-
-    generate_test(task, ranges, solution, add=True)
-
-    task = r'Найдите сумму целых решений ' + latex
-
-    def solution(**k):
-        roots = get_integer_roots(foo(**k), RANGE=range(-100, 100))
-        if get_answer_of_inequality(foo(**k), nulls=nulls) and roots[0] != -100 and roots[-1] != 99 and sum(
-                roots) != 0 and sum(roots) < 100:
-            return sum(roots)
-
-    generate_test(task, ranges, solution, add=True)
 
 
 if __name__ == '__main__':
