@@ -1,4 +1,4 @@
-task = r'$[a]x^3+[b]x^2+[c]x+[d]<0$ Введите сумму корней'
+task = r'$[a]x^3+[b]x^2+[c]x+[d]<0$'
 
 ranges = dict(
     x1=range(-10, 10),
