@@ -9,7 +9,7 @@ from utils import filter_dict, get_params_from_function, get_params_from_task
 import sys
 import __main__
 from templates import latex_to_function, get_integer_roots, get_answer_of_inequality
-
+from copy import deepcopy
 def generate_inequality_test(latex, ranges, nulls=0, amount=10):
     foo = latex_to_function(latex)
     task = r'Найдите максимальное целое решение' + latex
@@ -117,7 +117,7 @@ def prettify_ranges(ranges):
     return ranges
 
 
-def get_max_nulls(task_mask):
+def get_max_nulls(task_mask, ranges):
     if not 'x' in task_mask:
         return
     if '<' in task_mask or '>' in task_mask:
@@ -130,7 +130,7 @@ def get_max_nulls(task_mask):
     nulls = 0
     for i in range(1, 10):
         try:
-            get_tasks(task_mask, {}, templates.get_solution(task_mask, nulls=i), 1, 'find_nulls', iterations=20000)
+            get_tasks(task_mask, ranges, templates.get_solution(task_mask, nulls=i), 1, 'find_nulls', iterations=20000)
             nulls = i
         except:
             break
@@ -154,7 +154,7 @@ def get_variables(params, ranges):
         for param in full_list_of_params
     }
     while prev_variables != variables:
-        prev_variables = variables.copy()
+        prev_variables = deepcopy(variables)
         for param in full_list_of_params:
             if callable(variables[param]):
                 props = filter_dict(variables, variables[param])
@@ -176,7 +176,7 @@ def get_tasks(task_mask, ranges, solution, amount, name_of_file, iterations=1000
         task_mask = replace_numbers_by_variables(task_mask)
         params = get_params_from_task(task_mask)
     if solution is None:
-        nulls = get_max_nulls(task_mask) if 'x' in task_mask else 0
+        nulls = get_max_nulls(task_mask, ranges) if 'x' in task_mask else 0
         if '<' in task_mask or '>' in task_mask:
             print('generate inequality test')
             generate_inequality_test(task_mask, ranges, nulls, amount)
