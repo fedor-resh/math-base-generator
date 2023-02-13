@@ -10,7 +10,7 @@ import sys
 import __main__
 from templates import latex_to_function, get_integer_roots, get_answer_of_inequality
 
-def generate_inequality_test(latex, ranges, nulls=0):
+def generate_inequality_test(latex, ranges, nulls=0, amount=10):
     foo = latex_to_function(latex)
     task = r'Найдите максимальное целое решение' + latex
 
@@ -19,25 +19,34 @@ def generate_inequality_test(latex, ranges, nulls=0):
         if get_answer_of_inequality(foo(**k), nulls=nulls) and max(roots) != 99:
             return max(roots)
 
-    generate_test(task, ranges, solution, add=True)
-    task = r'Найдите количество целых решений ' + latex
+    generate_test(task, ranges, solution, add=True, amount=amount//3 if nulls % 2 == 0 else amount)
+    # task = r'Найдите минимальное целое решение' + latex
+    #
+    # def solution(**k):
+    #     roots = get_integer_roots(foo(**k), RANGE=range(-100, 100))
+    #     if get_answer_of_inequality(foo(**k), nulls=nulls) and min(roots) != -100:
+    #         return min(roots)
+    #
+    # generate_test(task, ranges, solution, add=True, amount=(amount//3 if nulls % 2 else amount))
+    if nulls % 2 == 0:
+        task = r'Найдите количество целых решений ' + latex
 
-    def solution(**k):
-        roots = get_integer_roots(foo(**k), RANGE=range(-100, 100))
-        if get_answer_of_inequality(foo(**k), nulls=nulls) and roots[0] != -100 and roots[-1] != 99 and sum(roots) != 0:
-            return len(roots)
+        def solution(**k):
+            roots = get_integer_roots(foo(**k), RANGE=range(-100, 100))
+            if get_answer_of_inequality(foo(**k), nulls=nulls) and roots[0] != -100 and roots[-1] != 99 and sum(roots) != 0:
+                return len(roots)
 
-    generate_test(task, ranges, solution, add=True)
+        generate_test(task, ranges, solution, add=True,amount=amount//3)
 
-    task = r'Найдите сумму целых решений ' + latex
+        task = r'Найдите сумму целых решений ' + latex
 
-    def solution(**k):
-        roots = get_integer_roots(foo(**k), RANGE=range(-100, 100))
-        if get_answer_of_inequality(foo(**k), nulls=nulls) and roots[0] != -100 and roots[-1] != 99 and sum(
-                roots) != 0 and sum(roots) < 100:
-            return sum(roots)
+        def solution(**k):
+            roots = get_integer_roots(foo(**k), RANGE=range(-100, 100))
+            if get_answer_of_inequality(foo(**k), nulls=nulls) and roots[0] != -100 and roots[-1] != 99 and sum(
+                    roots) != 0 and sum(roots) < 100:
+                return sum(roots)
 
-    generate_test(task, ranges, solution, add=True)
+        generate_test(task, ranges, solution, add=True,amount=amount//3 + amount % 3)
 
 def get_py_filenames(path='./'):
     from os import walk
@@ -170,7 +179,7 @@ def get_tasks(task_mask, ranges, solution, amount, name_of_file, iterations=1000
         nulls = get_max_nulls(task_mask) if 'x' in task_mask else 0
         if '<' in task_mask or '>' in task_mask:
             print('generate inequality test')
-            generate_inequality_test(task_mask, ranges, nulls)
+            generate_inequality_test(task_mask, ranges, nulls, amount)
             return
         import templates
         solution = templates.get_solution(task_mask, nulls=nulls)

@@ -46,4 +46,4 @@ ranges = dict(
 
 if __name__ == '__main__':
     from GENERATOR import generate_test
-    generate_test(task, ranges)
+    generate_test(task, ranges, amount=100)
