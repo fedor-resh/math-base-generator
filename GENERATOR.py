@@ -19,15 +19,15 @@ def generate_inequality_test(latex, ranges, nulls=0, amount=10):
         if get_answer_of_inequality(foo(**k), nulls=nulls) and max(roots) != 99:
             return max(roots)
 
-    generate_test(task, ranges, solution, add=True, amount=amount//3 if nulls % 2 == 0 else amount)
-    # task = r'Найдите минимальное целое решение' + latex
-    #
-    # def solution(**k):
-    #     roots = get_integer_roots(foo(**k), RANGE=range(-100, 100))
-    #     if get_answer_of_inequality(foo(**k), nulls=nulls) and min(roots) != -100:
-    #         return min(roots)
-    #
-    # generate_test(task, ranges, solution, add=True, amount=(amount//3 if nulls % 2 else amount))
+    generate_test(task, ranges, solution, amount=amount//4 if nulls % 2 == 0 else amount//2)
+    task = r'Найдите минимальное целое решение' + latex
+
+    def solution(**k):
+        roots = get_integer_roots(foo(**k), RANGE=range(-100, 100))
+        if get_answer_of_inequality(foo(**k), nulls=nulls) and min(roots) != -100:
+            return min(roots)
+
+    generate_test(task, ranges, solution, add=True, amount=amount//4 if nulls % 2 == 0 else amount//2)
     if nulls % 2 == 0:
         task = r'Найдите количество целых решений ' + latex
 
@@ -36,7 +36,7 @@ def generate_inequality_test(latex, ranges, nulls=0, amount=10):
             if get_answer_of_inequality(foo(**k), nulls=nulls) and roots[0] != -100 and roots[-1] != 99 and sum(roots) != 0:
                 return len(roots)
 
-        generate_test(task, ranges, solution, add=True,amount=amount//3)
+        generate_test(task, ranges, solution, add=True,amount=amount//4)
 
         task = r'Найдите сумму целых решений ' + latex
 
@@ -46,7 +46,7 @@ def generate_inequality_test(latex, ranges, nulls=0, amount=10):
                     roots) != 0 and sum(roots) < 100:
                 return sum(roots)
 
-        generate_test(task, ranges, solution, add=True,amount=amount//3 + amount % 3)
+        generate_test(task, ranges, solution, add=True,amount=amount//4 + amount % 4)
 
 def get_py_filenames(path='./'):
     from os import walk
