@@ -1,12 +1,16 @@
 import math
 from latex import latex_to_python
 from utils import get_params_from_task
+import re
 def get_integer_roots(func, RANGE=range(-10, 10), nulls=0):
     roots = []
     for x in RANGE:
-        if func(x):
-            roots.append(x)
-            nulls -= 1
+        try:
+            if func(x):
+                roots.append(x)
+                nulls -= 1
+        except:
+            pass
     if nulls <= 0:
         return roots
 
@@ -77,6 +81,8 @@ def get_answer_of_inequality(func, RANGE=range(-10, 10), nulls=0):
 def latex_to_function(latex):
     params = get_params_from_task(latex)
     python = latex_to_python(latex)
+    left, mid, right = re.split(r'(<=|>=|<|>|==)', python)
+    python = f'round({left}, 6){mid}round({right}, 6)'
     print('lambda ' + ','.join(params) + ':' + 'lambda x:' + python)
     foo = eval('lambda ' + ','.join(params) + ':' + 'lambda x:' + python)
     return foo
