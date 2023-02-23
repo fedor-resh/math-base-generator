@@ -2,7 +2,7 @@ import math
 from latex import latex_to_python
 from utils import get_params_from_task
 import re
-def get_integer_roots(func, RANGE=range(-10, 10), nulls=0):
+def get_integer_roots(func, RANGE=range(-10, 11), nulls=0):
     roots = []
     for x in RANGE:
         try:
@@ -60,16 +60,18 @@ def get_roots_of_polynomial(a=None, b=None, c=None, d=None):
         return roots
 
 
-def get_answer_of_inequality(func, RANGE=range(-10, 10), nulls=0):
+def get_answer_of_inequality(func, RANGE=range(-10, 11), nulls=0):
     prev = None
-    for x in RANGE:
+    def func(x):
         try:
-            analize = [func(x - 0.000001), func(x), func(x + 0.000001)]
-            if not type(analize[0]) == bool:
-                print('Error: function must return bool')
-                return
+            return func(x)
         except:
-            analize = [func(x - 0.000001), False, func(x + 0.000001)]
+            return False
+    for x in RANGE:
+        analize = [func(x - 0.000001), func(x), func(x + 0.000001)]
+        if not type(analize[0]) == bool:
+            print('Error: function must return bool')
+            return
         if (not prev is None) and analize[0] != prev:
             return
         prev = analize[2]

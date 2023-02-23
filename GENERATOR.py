@@ -32,7 +32,7 @@ def generate_inequality_test(latex, ranges, nulls=0, amount=10):
         generate_test(task, ranges, solution, add=True, amount=amount, iterations=10000)
     except:
         pass
-    if nulls % 2:
+    if nulls % 2 == 0:
         task = r'Найдите количество целых решений ' + latex
 
         def solution(**k):
@@ -148,7 +148,7 @@ def is_iterable(obj):
     except:
         return False
 def get_variables(params, ranges):
-    default_range = ranges.get('default', list(set(range(-10, 10)) - {0, 1, -1}))
+    default_range = ranges.get('default', list(set(range(-10, 11)) - {0, 1, -1}))
     prev_variables = None
     full_list_of_params = {*params, *ranges.keys()}
     variables = {
@@ -181,8 +181,8 @@ def get_tasks(task_mask, ranges, solution, amount, name_of_file, iterations=1000
         params = get_params_from_task(task_mask)
     if solution is None:
         nulls = get_max_nulls(task_mask, ranges) if 'x' in task_mask else 0
+        nulls = int(input(f'Максимальное количество нулей (enter to submit {nulls=}):') or str(nulls))
         if '<' in task_mask or '>' in task_mask:
-            nulls = int(input(f'Максимальное количество нулей (enter to submit {nulls=}):')) or nulls
             print('generate inequality test')
             generate_inequality_test(task_mask, ranges, nulls, amount)
             return
