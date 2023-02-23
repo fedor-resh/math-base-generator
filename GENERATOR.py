@@ -18,17 +18,21 @@ def generate_inequality_test(latex, ranges, nulls=0, amount=10):
         roots = get_integer_roots(foo(**k), RANGE=range(-100, 100))
         if get_answer_of_inequality(foo(**k), nulls=nulls) and max(roots) != 99:
             return max(roots)
-
-    generate_test(task, ranges, solution, amount=amount//4 if nulls % 2 == 0 else amount//2)
+    try:
+        generate_test(task, ranges, solution, amount=amount, iterations=10000)
+    except:
+        pass
     task = r'Найдите минимальное целое решение' + latex
 
     def solution(**k):
         roots = get_integer_roots(foo(**k), RANGE=range(-100, 100))
         if get_answer_of_inequality(foo(**k), nulls=nulls) and min(roots) != -100:
             return min(roots)
-
-    generate_test(task, ranges, solution, add=True, amount=amount//4 if nulls % 2 == 0 else amount//2)
-    if nulls % 2 == 0:
+    try:
+        generate_test(task, ranges, solution, add=True, amount=amount, iterations=10000)
+    except:
+        pass
+    if nulls % 2:
         task = r'Найдите количество целых решений ' + latex
 
         def solution(**k):
@@ -178,6 +182,7 @@ def get_tasks(task_mask, ranges, solution, amount, name_of_file, iterations=1000
     if solution is None:
         nulls = get_max_nulls(task_mask, ranges) if 'x' in task_mask else 0
         if '<' in task_mask or '>' in task_mask:
+            nulls = int(input(f'Максимальное количество нулей (enter to submit {nulls=}):')) or nulls
             print('generate inequality test')
             generate_inequality_test(task_mask, ranges, nulls, amount)
             return
@@ -225,11 +230,12 @@ def generate_test(
         amount: int = config['amount_of_tasks'],
         create_file: bool = config['create_file'],
         add=False,
+        **kwargs
 ):
     render_latex(task_mask)
     name_of_file = __main__.__file__.replace('/', '\\').split('\\')[-1].split('.')[0]
     params = task_mask.strip(), ranges, solution, amount, name_of_file
-    tasks = get_tasks(*params)
+    tasks = get_tasks(*params, **kwargs)
     if create_file:
         write_to_file('\n'.join(tasks), name_of_file, '..', add=add)
 

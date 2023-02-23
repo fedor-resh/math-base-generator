@@ -31,7 +31,7 @@
 #     from GENERATOR import generate_test
 #     generate_test(task, ranges, amount=10)
 
-task = r'$[a]^{[b]*x+[c]}>[a]^{[d]*x+[e]}$'
+task = r'$[a]^{[b]x+[c]}>[a]^{[d]x+[e]}$'
 
 ranges = dict(
     x1=range(-10, 10),
@@ -46,3 +46,12 @@ if __name__ == '__main__':
     from GENERATOR import generate_test
 
     generate_test(task, ranges, amount=10)
+
+# task = rtask = r'$\log_{[a]}{x^{[c]}} + \log_{[a]}{x} > [d]$'
+#
+# ranges = dict(
+# )
+#
+# if __name__ == '__main__':
+#     from GENERATOR import generate_test
+#     generate_test(task, ranges, amount=10)
